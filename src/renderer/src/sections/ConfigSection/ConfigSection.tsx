@@ -17,7 +17,7 @@ export function ConfigSection({
   onTimeReset
 }: ConfigSectionProps): React.JSX.Element {
   return (
-    <div className="app-no-drag tab-content">
+    <div className="app-no-drag flex flex-1 flex-col gap-5 overflow-y-auto">
       <ConfigSlider
         value={config.focusMinutes}
         min={MIN_MINUTES}
@@ -30,7 +30,7 @@ export function ConfigSection({
         }}
       />
 
-      <div className="toggle-group">
+      <div className="flex flex-col gap-1">
         <Toggle
           label="Sonido de notificación"
           subtitle="Reproducir sonido al terminar sesión"

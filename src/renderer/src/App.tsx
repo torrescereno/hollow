@@ -19,10 +19,9 @@ export default function App(): React.JSX.Element {
   )
 
   return (
-    <div className="app-drag app-container">
+    <div className="app-drag flex h-full w-full items-center justify-center">
       <div
-        className={`window ${view === 'timer' ? 'timer-view' : 'menu-view'}`}
-        style={{ backgroundColor: '#0f0f0f' }}
+        className={`relative overflow-hidden bg-bg-window border-none transition-[border-radius] duration-[180ms] ease-in-out will-change-[border-radius] transform-gpu ${view === 'timer' ? 'w-[220px] h-[150px] rounded-[2rem]' : 'w-[660px] h-[460px] rounded-[2rem]'}`}
       >
         {view === 'timer' && (
           <TimerView

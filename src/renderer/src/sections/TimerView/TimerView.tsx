@@ -25,7 +25,10 @@ export function TimerView({
   const displayMinutes = Math.ceil(timeLeft / 60).toString()
 
   return (
-    <div className="timer-container pinned" style={{ display: isTransitioning ? 'none' : 'flex' }}>
+    <div
+      className="absolute inset-0 flex flex-col items-center justify-center p-5 transition-[padding] duration-[180ms] ease-in-out will-change-[padding] transform-gpu backface-hidden"
+      style={{ display: isTransitioning ? 'none' : 'flex' }}
+    >
       <Timer minutes={displayMinutes} isRunning={isRunning} />
       <Controls
         isPinned={isPinned}

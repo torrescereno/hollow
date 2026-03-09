@@ -22,8 +22,8 @@ export function StatsSection({ stats, onClear }: StatsSectionProps): React.JSX.E
   }
 
   return (
-    <div className="tab-content">
-      <div className="stats-grid-main">
+    <div className="flex flex-1 flex-col gap-5 overflow-y-auto">
+      <div className="grid grid-cols-3 gap-3">
         <StatCard label="Hoy" value={stats.today.sessions} subtext={`${stats.today.minutes} min`} />
         <StatCard
           label="Esta semana"
@@ -37,7 +37,7 @@ export function StatsSection({ stats, onClear }: StatsSectionProps): React.JSX.E
         />
       </div>
 
-      <div className="stats-grid-secondary">
+      <div className="grid grid-cols-3 gap-3">
         <StatCard label="Racha" value={`${stats.streak} días`} variant="secondary" />
         <StatCard label="Prom / día" value={stats.avgPerDay} variant="secondary" />
         <StatCard label="Más larga" value={`${stats.longestSession}m`} variant="secondary" />
@@ -46,7 +46,9 @@ export function StatsSection({ stats, onClear }: StatsSectionProps): React.JSX.E
       {stats.total.sessions > 0 && (
         <button
           onClick={handleClear}
-          className={`app-no-drag btn-clear ${confirmClear ? 'confirm' : ''}`}
+          className={`app-no-drag flex items-center gap-2 text-[0.6875rem] transition-colors duration-200 mt-4 ${
+            confirmClear ? 'text-red-400/70' : 'text-white/15 hover:text-red-400/50'
+          }`}
         >
           <Trash2 size={12} strokeWidth={1.5} />
           {confirmClear ? 'Clic para confirmar' : 'Borrar datos'}

@@ -20,16 +20,24 @@ export function Controls({
   onOpenMenu
 }: ControlsProps): React.JSX.Element {
   return (
-    <div className="app-no-drag controls pinned">
+    <div className="app-no-drag flex items-center mt-3 gap-3">
       <button
         onClick={onTogglePin}
         title={isPinned ? 'Desanclar' : 'Anclar'}
-        className={`btn-icon btn-pin ${isPinned ? 'active' : 'inactive'} pinned-size`}
+        className={`rounded-full transition-all duration-200 flex items-center justify-center active:scale-95 p-2 ${
+          isPinned
+            ? 'text-text-main bg-white/10'
+            : 'text-white/25 hover:text-white/60 hover:bg-white/5'
+        }`}
       >
         {isPinned ? <PinOff size={14} strokeWidth={1.5} /> : <Pin size={14} strokeWidth={1.5} />}
       </button>
 
-      <button onClick={onReset} title="Reiniciar" className="btn-icon btn-secondary pinned-size">
+      <button
+        onClick={onReset}
+        title="Reiniciar"
+        className="rounded-full transition-all duration-200 flex items-center justify-center active:scale-95 p-2 text-white/20 hover:text-white/50 hover:bg-white/5"
+      >
         <RotateCcw size={14} strokeWidth={1.5} />
       </button>
 
@@ -46,16 +54,20 @@ export function Controls({
           type: 'tween'
         }}
         title={isRunning ? 'Pausar' : 'Iniciar'}
-        className="btn-play pinned-size"
+        className="flex items-center justify-center rounded-full bg-text-main text-black transition-all duration-200 active:scale-95 hover:bg-white/90 w-9 h-9"
       >
         {isRunning ? (
           <Pause size={15} fill="currentColor" />
         ) : (
-          <Play size={15} fill="currentColor" className="play-icon-offset" />
+          <Play size={15} fill="currentColor" className="ml-0.5" />
         )}
       </motion.button>
 
-      <button onClick={onOpenMenu} title="Menú" className="btn-icon btn-secondary pinned-size">
+      <button
+        onClick={onOpenMenu}
+        title="Menú"
+        className="rounded-full transition-all duration-200 flex items-center justify-center active:scale-95 p-2 text-white/20 hover:text-white/50 hover:bg-white/5"
+      >
         <MenuIcon size={14} strokeWidth={1.5} />
       </button>
     </div>
