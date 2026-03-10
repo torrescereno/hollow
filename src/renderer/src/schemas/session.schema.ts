@@ -1,11 +1,11 @@
 export interface SessionRecord {
   id?: number
-  startTime: Date
-  endTime?: Date | null
+  startTime: Date | number
+  endTime?: Date | number | null
   durationSeconds: number
   focusMinutes: number
   completed: boolean
-  createdAt?: Date | null
+  createdAt?: Date | number | null
 }
 
 export interface SessionStats {

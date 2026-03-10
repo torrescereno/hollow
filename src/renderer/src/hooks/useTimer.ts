@@ -36,8 +36,8 @@ export function useTimer(
 
     const now = new Date()
     const session: Omit<SessionRecord, 'id' | 'createdAt'> = {
-      startTime: now,
-      endTime: now,
+      startTime: now.getTime(),
+      endTime: now.getTime(),
       durationSeconds: configRef.current.focusMinutes * 60,
       focusMinutes: configRef.current.focusMinutes,
       completed: true

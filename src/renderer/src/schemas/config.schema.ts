@@ -23,5 +23,5 @@ export const DEFAULT_CONFIG: AppConfig = {
   selectedSound: 'bell'
 }
 
-export const MIN_MINUTES = 20
+export const MIN_MINUTES = 1
 export const MAX_MINUTES = 90

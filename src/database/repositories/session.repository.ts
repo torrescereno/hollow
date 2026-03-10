@@ -153,7 +153,7 @@ export const sessionRepository = {
 
     sessionsThisWeek.forEach((s) => activeDays.add(s.date))
 
-    const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+    const days = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa', 'Do']
     const result: { day: string; active: boolean; isToday: boolean }[] = []
 
     for (let i = 0; i < 7; i++) {

@@ -5,7 +5,17 @@ import type { NewSession } from '../../database/schema'
 
 export function registerSessionIPC(): void {
   ipcMain.handle('session:create', (_event, data: NewSession) => {
-    const session = sessionRepository.create(data)
+    const normalizedData = {
+      ...data,
+      startTime: typeof data.startTime === 'number' ? new Date(data.startTime) : data.startTime,
+      endTime: data.endTime
+        ? typeof data.endTime === 'number'
+          ? new Date(data.endTime)
+          : data.endTime
+        : null
+    }
+
+    const session = sessionRepository.create(normalizedData)
 
     if (session.completed) {
       statsService.updateStreakOnSessionComplete(session.startTime)

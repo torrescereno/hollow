@@ -26,17 +26,17 @@ export function StatsSection({ stats, onClear }: StatsSectionProps): React.JSX.E
 
     if (stats.bestStreak === 0) return '¡Comienza tu primera racha hoy!'
     if (stats.streak === 0) return `¡Vuelve al ritmo! Récord: ${stats.bestStreak} días`
-    if (daysLeft <= 0) return '¡Estás en tu mejor racha histórica! 🔥'
+    if (daysLeft <= 0) return '¡Estás en tu mejor racha histórica!'
     if (stats.streak <= 3) return `¡Buen comienzo! A ${daysLeft} días de tu récord`
     return `¡Vas en racha! A ${daysLeft} días de tu récord`
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-5 overflow-y-auto">
+    <div className="app-no-drag flex flex-1 flex-col gap-5 overflow-y-auto pr-3">
       <div className="streak-card bg-white/5 rounded-xl p-5 border border-white/10">
         <div className="flex justify-between items-center mb-4">
           <div className="flex flex-col gap-1">
-            <span className="text-xs text-white/40 uppercase tracking-wider">Current Streak</span>
+            <span className="text-xs text-white/40 uppercase tracking-wider">Racha Actual</span>
             <span className="text-sm text-white/60">{getMotivationalMessage()}</span>
           </div>
           <span className="text-4xl font-extralight text-white tabular-nums">{stats.streak}</span>
@@ -62,10 +62,10 @@ export function StatsSection({ stats, onClear }: StatsSectionProps): React.JSX.E
       </div>
 
       <div className="grid grid-cols-3 gap-3">
-        <StatCard 
-          label="Hoy" 
-          value={stats.today?.sessions || 0} 
-          subtext={`${stats.today?.minutes || 0} min`} 
+        <StatCard
+          label="Hoy"
+          value={stats.today?.sessions || 0}
+          subtext={`${stats.today?.minutes || 0} min`}
         />
         <StatCard
           label="Esta semana"

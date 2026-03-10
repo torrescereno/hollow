@@ -8,7 +8,11 @@ interface UseSessionsReturn {
   clearSessions: () => Promise<void>
 }
 
-export function useSessions(): UseSessionsReturn {
+interface UseSessionsOptions {
+  onSessionLogged?: () => void
+}
+
+export function useSessions(options?: UseSessionsOptions): UseSessionsReturn {
   const [sessions, setSessions] = useState<SessionRecord[]>([])
 
   useEffect(() => {
@@ -20,6 +24,7 @@ export function useSessions(): UseSessionsReturn {
   const logSession = async (session: Omit<SessionRecord, 'id' | 'createdAt'>): Promise<void> => {
     const created = await sessionsService.create(session)
     setSessions((prev) => [...prev, created])
+    options?.onSessionLogged?.()
   }
 
   const clearSessions = async (): Promise<void> => {

@@ -9,8 +9,8 @@ export default function App(): React.JSX.Element {
   const { view, switchView, isResizing } = useViewTransition()
   const { isPinned, togglePin } = usePinned()
   const { config, updateConfig, configRef } = useConfig()
-  const { logSession, clearSessions } = useSessions()
-  const stats = useStats()
+  const { stats, refresh: refreshStats } = useStats()
+  const { logSession, clearSessions } = useSessions({ onSessionLogged: refreshStats })
 
   const { timeLeft, isRunning, toggleTimer, resetTimer, setTimeLeft } = useTimer(
     config.focusMinutes,

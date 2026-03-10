@@ -2,7 +2,12 @@ import { useState, useEffect, useCallback } from 'react'
 import { sessionsService } from '../services'
 import type { Stats } from '../schemas/stats.schema'
 
-export function useStats(): Stats {
+interface UseStatsReturn {
+  stats: Stats
+  refresh: () => Promise<void>
+}
+
+export function useStats(): UseStatsReturn {
   const [stats, setStats] = useState<Stats>({
     today: { sessions: 0, minutes: 0 },
     week: { sessions: 0, minutes: 0 },
@@ -18,9 +23,9 @@ export function useStats(): Stats {
   const loadStats = useCallback(async () => {
     const apiStats = await sessionsService.getFullStats()
     setStats({
-      today: { sessions: apiStats.today.count, minutes: apiStats.today.totalMinutes },
-      week: { sessions: apiStats.week.count, minutes: apiStats.week.totalMinutes },
-      total: { sessions: apiStats.total.count, minutes: apiStats.total.totalMinutes },
+      today: { sessions: apiStats.today.sessions, minutes: apiStats.today.minutes },
+      week: { sessions: apiStats.week.sessions, minutes: apiStats.week.minutes },
+      total: { sessions: apiStats.total.sessions, minutes: apiStats.total.minutes },
       streak: apiStats.streak,
       bestStreak: apiStats.bestStreak,
       avgPerDay: apiStats.avgPerDay,
@@ -34,5 +39,5 @@ export function useStats(): Stats {
     loadStats()
   }, [loadStats])
 
-  return stats
+  return { stats, refresh: loadStats }
 }
