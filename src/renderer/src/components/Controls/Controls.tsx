@@ -1,13 +1,5 @@
 import React from 'react'
-import {
-  Check,
-  Pause,
-  Pin,
-  PinOff,
-  Play,
-  RotateCcw,
-  Menu as MenuIcon
-} from 'lucide-react'
+import { Check, Pause, Pin, PinOff, Play, RotateCcw, Menu as MenuIcon } from 'lucide-react'
 import { motion } from 'motion/react'
 
 const collapseTransition = { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const }
@@ -52,11 +44,7 @@ export function Controls({
               : 'text-white/25 hover:text-white/60 hover:bg-white/5'
           }`}
         >
-          {isPinned ? (
-            <PinOff size={15} strokeWidth={1.5} />
-          ) : (
-            <Pin size={15} strokeWidth={1.5} />
-          )}
+          {isPinned ? <PinOff size={15} strokeWidth={1.5} /> : <Pin size={15} strokeWidth={1.5} />}
         </button>
 
         <button
