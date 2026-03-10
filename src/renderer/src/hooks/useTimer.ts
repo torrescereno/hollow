@@ -53,6 +53,7 @@ export function useTimer(
   const toggleTimer = useCallback(() => {
     if (timeLeft === 0) {
       setTimeLeft(focusMinutes * 60)
+      return
     }
     setIsRunning((r) => !r)
   }, [timeLeft, focusMinutes])
