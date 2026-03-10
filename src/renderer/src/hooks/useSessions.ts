@@ -6,6 +6,7 @@ interface UseSessionsReturn {
   sessions: SessionRecord[]
   logSession: (session: Omit<SessionRecord, 'id' | 'createdAt'>) => Promise<void>
   clearSessions: () => Promise<void>
+  exportCsv: () => Promise<void>
 }
 
 interface UseSessionsOptions {
@@ -32,5 +33,9 @@ export function useSessions(options?: UseSessionsOptions): UseSessionsReturn {
     await sessionsService.clear()
   }
 
-  return { sessions, logSession, clearSessions }
+  const exportCsv = async (): Promise<void> => {
+    await sessionsService.exportCsv()
+  }
+
+  return { sessions, logSession, clearSessions, exportCsv }
 }

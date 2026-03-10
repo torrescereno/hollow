@@ -10,7 +10,7 @@ export default function App(): React.JSX.Element {
   const { isPinned, togglePin } = usePinned()
   const { config, updateConfig, configRef } = useConfig()
   const { stats, refresh: refreshStats } = useStats()
-  const { logSession, clearSessions } = useSessions({ onSessionLogged: refreshStats })
+  const { logSession, clearSessions, exportCsv } = useSessions({ onSessionLogged: refreshStats })
 
   const { timeLeft, isRunning, toggleTimer, resetTimer, setTimeLeft } = useTimer(
     config.focusMinutes,
@@ -49,6 +49,7 @@ export default function App(): React.JSX.Element {
             onUpdateConfig={updateConfig}
             onTimeReset={(val) => setTimeLeft(val * 60)}
             onClearSessions={clearSessions}
+            onExportCsv={exportCsv}
             onBack={() => switchView('timer')}
           />
         )}

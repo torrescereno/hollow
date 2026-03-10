@@ -15,6 +15,7 @@ interface MenuViewProps {
   onUpdateConfig: (partial: Partial<AppConfig>) => void
   onTimeReset: (minutes: number) => void
   onClearSessions: () => void
+  onExportCsv: () => void
   onBack: () => void
 }
 
@@ -27,6 +28,7 @@ export function MenuView({
   onUpdateConfig,
   onTimeReset,
   onClearSessions,
+  onExportCsv,
   onBack
 }: MenuViewProps): React.JSX.Element {
   const menuItems = [
@@ -61,7 +63,7 @@ export function MenuView({
             </p>
 
             {menuTab === 'stats' ? (
-              <StatsSection stats={stats} onClear={onClearSessions} />
+              <StatsSection stats={stats} onClear={onClearSessions} onExportCsv={onExportCsv} />
             ) : (
               <ConfigSection
                 config={config}

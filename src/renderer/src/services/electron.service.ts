@@ -75,6 +75,10 @@ class ElectronService {
   async clearSessions(): Promise<void> {
     await this.api?.session.clear()
   }
+
+  async exportSessionsCsv(): Promise<boolean> {
+    return (await this.api?.session.exportCsv()) ?? false
+  }
 }
 
 export const electronService = new ElectronService()

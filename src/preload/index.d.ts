@@ -50,6 +50,7 @@ interface ElectronAPI {
     getStats: () => Promise<SessionStats>
     getFullStats: () => Promise<FullSessionStats>
     clear: () => Promise<void>
+    exportCsv: () => Promise<boolean>
   }
 }
 

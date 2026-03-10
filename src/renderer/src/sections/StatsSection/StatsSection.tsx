@@ -1,4 +1,4 @@
-import { Trash2 } from 'lucide-react'
+import { Download, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
 import { StatCard } from '../../components'
 import type { Stats } from '../../schemas'
@@ -6,9 +6,10 @@ import type { Stats } from '../../schemas'
 interface StatsSectionProps {
   stats: Stats
   onClear: () => void
+  onExportCsv: () => void
 }
 
-export function StatsSection({ stats, onClear }: StatsSectionProps): React.JSX.Element {
+export function StatsSection({ stats, onClear, onExportCsv }: StatsSectionProps): React.JSX.Element {
   const [confirmClear, setConfirmClear] = useState(false)
 
   const handleClear = (): void => {
@@ -86,15 +87,24 @@ export function StatsSection({ stats, onClear }: StatsSectionProps): React.JSX.E
       </div>
 
       {(stats.total?.sessions || 0) > 0 && (
-        <button
-          onClick={handleClear}
-          className={`app-no-drag flex items-center gap-2 text-[0.6875rem] transition-colors duration-200 mt-4 ${
-            confirmClear ? 'text-red-400/70' : 'text-white/15 hover:text-red-400/50'
-          }`}
-        >
-          <Trash2 size={12} strokeWidth={1.5} />
-          {confirmClear ? 'Clic para confirmar' : 'Borrar datos'}
-        </button>
+        <div className="flex items-center gap-4 mt-4">
+          <button
+            onClick={onExportCsv}
+            className="app-no-drag flex items-center gap-2 text-[0.6875rem] transition-colors duration-200 text-white/15 hover:text-white/50"
+          >
+            <Download size={12} strokeWidth={1.5} />
+            Exportar CSV
+          </button>
+          <button
+            onClick={handleClear}
+            className={`app-no-drag flex items-center gap-2 text-[0.6875rem] transition-colors duration-200 ${
+              confirmClear ? 'text-red-400/70' : 'text-white/15 hover:text-red-400/50'
+            }`}
+          >
+            <Trash2 size={12} strokeWidth={1.5} />
+            {confirmClear ? 'Clic para confirmar' : 'Borrar datos'}
+          </button>
+        </div>
       )}
     </div>
   )

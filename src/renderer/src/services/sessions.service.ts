@@ -21,6 +21,10 @@ class SessionsService {
   async clear(): Promise<void> {
     await electronService.clearSessions()
   }
+
+  async exportCsv(): Promise<boolean> {
+    return await electronService.exportSessionsCsv()
+  }
 }
 
 export const sessionsService = new SessionsService()
