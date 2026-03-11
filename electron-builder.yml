@@ -16,15 +16,12 @@ extraResources:
   - from: resources/
     to: .
     filter:
-      - "**/*"
+      - '**/*'
 win:
   icon: build/icons/win/icon.ico
   executableName: hollow
-nsis:
-  artifactName: ${name}-${version}-setup.${ext}
-  shortcutName: ${productName}
-  uninstallDisplayName: ${productName}
-  createDesktopShortcut: always
+  target:
+    - msi
 mac:
   icon: build/icons/mac/icon.icns
   entitlementsInherit: build/entitlements.mac.plist
@@ -40,7 +37,6 @@ linux:
   icon: build/icons/png
   target:
     - AppImage
-    - snap
     - deb
   maintainer: electronjs.org
   category: Utility
