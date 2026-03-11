@@ -20,6 +20,9 @@ jobs:
       - name: Install dependencies
         run: bun install
 
+      - name: Generate icons
+        run: bun run generate:icons
+
       - name: Build Windows
         run: |
           Remove-Item -Recurse -Force resources/migrations -ErrorAction SilentlyContinue
@@ -50,6 +53,9 @@ jobs:
       - name: Install dependencies
         run: bun install
 
+      - name: Generate icons
+        run: bun run generate:icons
+
       - name: Build macOS
         run: |
           rm -rf resources/migrations
@@ -79,6 +85,9 @@ jobs:
 
       - name: Install dependencies
         run: bun install
+
+      - name: Generate icons
+        run: bun run generate:icons
 
       - name: Build Linux
         run: |
