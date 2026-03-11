@@ -43,7 +43,6 @@ function createWindow(): void {
     iconPath = join(process.resourcesPath, 'icon.png')
   }
 
-  console.log('Icon path:', iconPath, 'exists:', require('fs').existsSync(iconPath))
   const icon = nativeImage.createFromPath(iconPath)
 
   if (process.platform === 'darwin' && !icon.isEmpty()) {

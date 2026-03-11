@@ -6,6 +6,7 @@ export interface SoundOption {
 
 export interface AppConfig {
   focusMinutes: number
+  restMinutes: number
   soundEnabled: boolean
   selectedSound: string
 }
@@ -19,9 +20,11 @@ export const SOUND_OPTIONS: SoundOption[] = [
 
 export const DEFAULT_CONFIG: AppConfig = {
   focusMinutes: 25,
+  restMinutes: 2,
   soundEnabled: true,
   selectedSound: 'bell'
 }
 
 export const MIN_MINUTES = 1
 export const MAX_MINUTES = 90
+export const MAX_REST_MINUTES = 30

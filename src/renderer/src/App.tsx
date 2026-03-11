@@ -12,11 +12,8 @@ export default function App(): React.JSX.Element {
   const { stats, refresh: refreshStats } = useStats()
   const { logSession, clearSessions, exportCsv } = useSessions({ onSessionLogged: refreshStats })
 
-  const { timeLeft, isRunning, toggleTimer, resetTimer, setTimeLeft } = useTimer(
-    config.focusMinutes,
-    configRef,
-    logSession
-  )
+  const { timeLeft, isRunning, timerPhase, toggleTimer, resetTimer, skipRest, setTimeLeft } =
+    useTimer(config.focusMinutes, config.restMinutes, configRef, logSession)
 
   const windowClass =
     view === 'menu' ? 'w-[700px] h-[500px] rounded-[2rem]' : 'w-[260px] h-[160px] rounded-[1.5rem]'
@@ -32,8 +29,10 @@ export default function App(): React.JSX.Element {
             isRunning={isRunning}
             isPinned={isPinned}
             isTransitioning={isResizing}
+            timerPhase={timerPhase}
             onToggleTimer={toggleTimer}
             onResetTimer={resetTimer}
+            onSkipRest={skipRest}
             onTogglePin={togglePin}
             onOpenMenu={() => switchView('menu')}
           />

@@ -2,7 +2,7 @@ import React from 'react'
 import { ConfigSlider, Toggle, SoundSelector } from '../../components'
 import { useSound } from '../../hooks'
 import type { AppConfig } from '../../schemas'
-import { MIN_MINUTES, MAX_MINUTES } from '../../schemas'
+import { MIN_MINUTES, MAX_MINUTES, MAX_REST_MINUTES } from '../../schemas'
 
 interface ConfigSectionProps {
   config: AppConfig
@@ -31,6 +31,15 @@ export function ConfigSection({
           onUpdate({ focusMinutes: val })
           if (!isRunning) onTimeReset(val)
         }}
+      />
+
+      <ConfigSlider
+        value={config.restMinutes}
+        min={MIN_MINUTES}
+        max={MAX_REST_MINUTES}
+        label="Duración de descanso"
+        subtitle={`Mínimo ${MIN_MINUTES} minuto`}
+        onChange={(val) => onUpdate({ restMinutes: val })}
       />
 
       <div className="flex flex-col gap-1">
