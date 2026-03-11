@@ -1,6 +1,8 @@
 import { app, BrowserWindow, ipcMain, nativeImage } from 'electron'
 import Store from 'electron-store'
 import { join } from 'path'
+import { existsSync, writeFileSync, unlinkSync, readFileSync } from 'fs'
+import { homedir } from 'os'
 import { is } from '@electron-toolkit/utils'
 import { initDatabase, closeDatabase } from '../database/client'
 import { registerSessionIPC } from './ipc'
@@ -84,28 +86,72 @@ function createWindow(): void {
   })
 }
 
-app.whenReady().then(() => {
-  initDatabase()
-  registerSessionIPC()
-  createWindow()
+// ── Single instance lock ──
 
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow()
+const LOCK_FILE = join(homedir(), '.hollow.lock')
+
+function isAnotherInstanceRunning(): boolean {
+  if (existsSync(LOCK_FILE)) {
+    try {
+      const pid = parseInt(readFileSync(LOCK_FILE, 'utf-8').trim(), 10)
+      process.kill(pid, 0)
+      return true
+    } catch {
+      try {
+        unlinkSync(LOCK_FILE)
+      } catch {
+        // ignore
+      }
+    }
+  }
+  return false
+}
+
+function acquireLock(): void {
+  writeFileSync(LOCK_FILE, String(process.pid), 'utf-8')
+}
+
+function releaseLock(): void {
+  try {
+    const content = readFileSync(LOCK_FILE, 'utf-8').trim()
+    if (content === String(process.pid)) {
+      unlinkSync(LOCK_FILE)
+    }
+  } catch {
+    // ignore
+  }
+}
+
+if (isAnotherInstanceRunning()) {
+  app.exit(0)
+} else {
+  acquireLock()
+
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+      closeDatabase()
+      releaseLock()
+      app.quit()
     }
   })
-})
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+  app.on('before-quit', () => {
     closeDatabase()
-    app.quit()
-  }
-})
+    releaseLock()
+  })
 
-app.on('before-quit', () => {
-  closeDatabase()
-})
+  app.whenReady().then(() => {
+    initDatabase()
+    registerSessionIPC()
+    createWindow()
+
+    app.on('activate', () => {
+      if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow()
+      }
+    })
+  })
+}
 
 // ── Pin ──
 

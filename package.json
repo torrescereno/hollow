@@ -21,26 +21,6 @@
     "build:linux": "rm -rf resources/migrations && cp -r src/database/migrations resources/migrations && electron-vite build && electron-builder --linux",
     "generate:icons": "electron-icon-builder --input=src/renderer/public/images/icon.png --output=build && cp build/icons/png/512x512.png resources/icon.png"
   },
-  "build": {
-    "appId": "com.hollow.app",
-    "productName": "Hollow",
-    "directories": {
-      "output": "dist"
-    },
-    "files": [
-      "out/**/*",
-      "resources/**/*"
-    ],
-    "mac": {
-      "icon": "build/icons/mac/icon.icns"
-    },
-    "win": {
-      "icon": "build/icons/win/icon.ico"
-    },
-    "linux": {
-      "icon": "build/icons/png"
-    }
-  },
   "dependencies": {
     "@electron-toolkit/utils": "^4.0.0",
     "better-sqlite3": "^12.6.2",

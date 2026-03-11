@@ -2,6 +2,7 @@ appId: com.hollow.app
 productName: Hollow
 directories:
   buildResources: build
+  output: dist
 files:
   - '!**/.vscode/*'
   - '!src/*'
@@ -43,6 +44,7 @@ linux:
     - deb
   maintainer: electronjs.org
   category: Utility
+  executableName: hollow
 appImage:
   artifactName: ${name}-${version}.${ext}
 publish:
