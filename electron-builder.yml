@@ -1,5 +1,5 @@
 appId: com.hollow.app
-productName: hollow
+productName: Hollow
 directories:
   buildResources: build
 files:

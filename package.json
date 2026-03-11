@@ -2,6 +2,8 @@
   "name": "hollow",
   "version": "1.0.0",
   "description": "A minimal Pomodoro timer for desktop",
+  "author": "torrescereno",
+  "homepage": "https://github.com/torrescereno/hollow",
   "main": "./out/main/index.js",
   "scripts": {
     "format": "prettier --write .",
@@ -13,10 +15,10 @@
     "dev": "electron-vite dev",
     "build": "electron-vite build",
     "postinstall": "electron-builder install-app-deps",
-    "build:unpack": "bun run build && electron-builder --dir",
-    "build:win": "bun run build && electron-builder --win",
-    "build:mac": "electron-vite build && electron-builder --mac",
-    "build:linux": "electron-vite build && electron-builder --linux",
+    "build:unpack": "rm -rf resources/migrations && cp -r src/database/migrations resources/migrations && bun run build && electron-builder --dir",
+    "build:win": "rm -rf resources/migrations && cp -r src/database/migrations resources/migrations && bun run build && electron-builder --win",
+    "build:mac": "rm -rf resources/migrations && cp -r src/database/migrations resources/migrations && electron-vite build && electron-builder --mac",
+    "build:linux": "rm -rf resources/migrations && cp -r src/database/migrations resources/migrations && electron-vite build && electron-builder --linux",
     "generate:icons": "electron-icon-builder --input=src/renderer/public/images/icon.png --output=build && cp build/icons/png/512x512.png resources/icon.png"
   },
   "dependencies": {

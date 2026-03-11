@@ -1,7 +1,7 @@
 import { SOUND_OPTIONS } from '../schemas'
 
 function getAudioPath(filename: string): string {
-  return `/sounds/${filename}`
+  return `./sounds/${filename}`
 }
 
 export async function playSoundById(soundId: string): Promise<HTMLAudioElement> {
