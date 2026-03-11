@@ -8,6 +8,8 @@ on:
 jobs:
   build-windows:
     runs-on: windows-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,19 +30,14 @@ jobs:
           Remove-Item -Recurse -Force resources/migrations -ErrorAction SilentlyContinue
           Copy-Item -Recurse src/database/migrations resources/migrations
           bun run build
-          bunx electron-builder --win --publish never
+          bunx electron-builder --win --publish always
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows
-          path: dist/*.msi
-          retention-days: 1
-
   build-macos:
     runs-on: macos-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -61,19 +58,14 @@ jobs:
           rm -rf resources/migrations
           cp -r src/database/migrations resources/migrations
           bun run build
-          bunx electron-builder --mac --publish never
+          bunx electron-builder --mac --publish always
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: macos
-          path: dist/*.dmg
-          retention-days: 1
-
   build-linux:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -94,59 +86,6 @@ jobs:
           rm -rf resources/migrations
           cp -r src/database/migrations resources/migrations
           bun run build
-          bunx electron-builder --linux --publish never
+          bunx electron-builder --linux --publish always
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload AppImage artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: linux-appimage
-          path: dist/*.AppImage
-          retention-days: 1
-
-      - name: Upload DEB artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: linux-deb
-          path: dist/*.deb
-          retention-days: 1
-
-  release:
-    needs: [build-windows, build-macos, build-linux]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Download Windows artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: windows
-          path: dist/
-
-      - name: Download macOS artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: macos
-          path: dist/
-
-      - name: Download Linux AppImage artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: linux-appimage
-          path: dist/
-
-      - name: Download Linux DEB artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: linux-deb
-          path: dist/
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          draft: true
-          generate_release_notes: true
-          files: dist/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

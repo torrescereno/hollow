@@ -4,6 +4,7 @@ import { join } from 'path'
 import { existsSync, writeFileSync, unlinkSync, readFileSync } from 'fs'
 import { homedir } from 'os'
 import { is } from '@electron-toolkit/utils'
+import { setupAutoUpdater, checkForUpdates } from './autoUpdater'
 import { initDatabase, closeDatabase } from '../database/client'
 import { registerSessionIPC } from './ipc'
 
@@ -144,6 +145,12 @@ if (isAnotherInstanceRunning()) {
     initDatabase()
     registerSessionIPC()
     createWindow()
+
+    if (!is.dev) {
+      setupAutoUpdater()
+      checkForUpdates()
+      setInterval(checkForUpdates, 4 * 60 * 60 * 1000)
+    }
 
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) {
