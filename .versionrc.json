@@ -15,8 +15,5 @@
   "releaseCommitMessageFormat": "chore: bump version to {{currentTag}}",
   "scripts": {
     "postchangelog": "bunx prettier --write CHANGELOG.md"
-  },
-  "skip": {
-    "tag": true
   }
 }
