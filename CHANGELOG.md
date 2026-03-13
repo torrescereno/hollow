@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0](https://github.com/torrescereno/hollow/compare/v3.1.0...v3.2.0) (2026-03-13)
+
+
+### Features
+
+* add confetti ([ef31ee0](https://github.com/torrescereno/hollow/commit/ef31ee0997e754c341024a561f6f65887799a0fe))
+
+
+### Bug Fixes
+
+* libs package.json ([12aa1e0](https://github.com/torrescereno/hollow/commit/12aa1e0c98b33d958ff8d5a68b611dd273dd02fc))
+
 ## [3.1.0](https://github.com/torrescereno/hollow/compare/v3.0.0...v3.1.0) (2026-03-13)
 
 
