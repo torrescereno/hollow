@@ -1,8 +1,8 @@
 import React from 'react'
-import { ConfigSlider, Toggle, SoundSelector } from '../../components'
+import { ConfigSlider, Toggle, SoundSelector, SliderWarning } from '../../components'
 import { useSound } from '../../hooks'
 import type { AppConfig } from '../../schemas'
-import { MIN_MINUTES, MAX_MINUTES, MAX_REST_MINUTES } from '../../schemas'
+import { MIN_MINUTES, MAX_MINUTES, MAX_REST_MINUTES, FOCUS_WARNING_THRESHOLD } from '../../schemas'
 
 interface ConfigSectionProps {
   config: AppConfig
@@ -21,17 +21,23 @@ export function ConfigSection({
 
   return (
     <div className="app-no-drag flex flex-1 flex-col gap-5 overflow-y-auto pr-2 -mr-2">
-      <ConfigSlider
-        value={config.focusMinutes}
-        min={MIN_MINUTES}
-        max={MAX_MINUTES}
-        label="Duración de enfoque"
-        subtitle={`Mínimo ${MIN_MINUTES} minutos`}
-        onChange={(val) => {
-          onUpdate({ focusMinutes: val })
-          if (!isRunning) onTimeReset(val)
-        }}
-      />
+      <div>
+        <ConfigSlider
+          value={config.focusMinutes}
+          min={MIN_MINUTES}
+          max={MAX_MINUTES}
+          label="Duración de enfoque"
+          subtitle={`Mínimo ${MIN_MINUTES} minutos`}
+          onChange={(val) => {
+            onUpdate({ focusMinutes: val })
+            if (!isRunning) onTimeReset(val)
+          }}
+        />
+        <SliderWarning
+          visible={config.focusMinutes > FOCUS_WARNING_THRESHOLD}
+          message="No excedas el tiempo recomendado, cuida tu salud. Sesiones muy largas pueden afectar tu concentración y postura."
+        />
+      </div>
 
       <ConfigSlider
         value={config.restMinutes}

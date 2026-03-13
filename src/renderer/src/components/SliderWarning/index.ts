@@ -1,0 +1,1 @@
+export { SliderWarning } from './SliderWarning'

@@ -21,6 +21,7 @@ export const DEFAULT_CONFIG: AppConfig = {
   selectedSound: 'bell'
 }
 
+export const FOCUS_WARNING_THRESHOLD = 25
 export const MIN_MINUTES = 1
 export const MAX_MINUTES = 90
 export const MAX_REST_MINUTES = 30
