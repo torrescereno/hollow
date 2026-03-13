@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.1](https://github.com/torrescereno/hollow/compare/v2.0.0...v2.0.1) (2026-03-13)
+
+
+### Bug Fixes
+
+* banner update ([7096e7a](https://github.com/torrescereno/hollow/commit/7096e7a2305335075e9e70178654bc65f69ba8cb))
+* update app and notifications ([eabb5fd](https://github.com/torrescereno/hollow/commit/eabb5fd5d02153c2e1cb4c14773cb1d3e1e40d85))
+
 ## [2.0.0](https://github.com/torrescereno/hollow/compare/v1.3.0...v2.0.0) (2026-03-13)
 
 
