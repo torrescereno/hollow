@@ -41,7 +41,7 @@ export function MenuView({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.15, ease: 'easeInOut' }}
+      transition={{ duration: 0.12, ease: 'easeOut' }}
       className="absolute inset-0 flex bg-bg-window transform-gpu backface-hidden"
     >
       <aside className="app-drag w-56 shrink-0 border-r border-white/5 bg-bg-window p-6 flex flex-col">

@@ -54,11 +54,10 @@ export function useViewTransition(): UseViewTransitionReturn {
       setView(target)
       setTransitionPhase('entering')
 
-      // Let the enter animation start, then go idle
-      requestAnimationFrame(() => {
-        setTransitionPhase('idle')
-        isTransitioning.current = false
-      })
+      // Wait for enter animation to finish before unlocking
+      await new Promise<void>((resolve) => setTimeout(resolve, 180))
+      setTransitionPhase('idle')
+      isTransitioning.current = false
     },
     [waitForExit]
   )
