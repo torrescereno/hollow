@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.6.0](https://github.com/torrescereno/hollow/compare/v0.5.2...v0.6.0) (2026-03-13)
+
+
+### Features
+
+* add UI improvements ([b5c4569](https://github.com/torrescereno/hollow/commit/b5c4569147ebbc6c99d4a650997474de805a2404))
+* refactor IPC into modules, update config, migrate to single instance lock ([62ac588](https://github.com/torrescereno/hollow/commit/62ac5889a0e18ecff58f4506dc2c0b99f09927c7))
+
+
+### Bug Fixes
+
+* delete migrations ([e5c9a81](https://github.com/torrescereno/hollow/commit/e5c9a8194e0ebc8e3f64be12dd7b92f76fd2b253))
+
 ## [0.5.2](https://github.com/torrescereno/hollow/compare/v0.5.1...v0.5.2) (2026-03-12)
 
 
