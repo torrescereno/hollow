@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/torrescereno/hollow/compare/v3.0.0...v3.1.0) (2026-03-13)
+
+
+### Features
+
+* add update button ([c95547e](https://github.com/torrescereno/hollow/commit/c95547e032f870a03f0fc63aad7b02f6a829ae8c))
+
+
+### Bug Fixes
+
+* lint ([587cfdd](https://github.com/torrescereno/hollow/commit/587cfdd98e3f2f80d0a983fe1c289e7888ba11f4))
+
 ## [3.0.0](https://github.com/torrescereno/hollow/compare/v2.0.1...v3.0.0) (2026-03-13)
 
 
