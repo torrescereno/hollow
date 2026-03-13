@@ -21,7 +21,7 @@ export function SoundSelector({
       initial={{ opacity: 0, height: 0 }}
       animate={{ opacity: 1, height: 'auto' }}
       exit={{ opacity: 0, height: 0 }}
-      transition={{ duration: 0.25, ease: 'easeInOut' }}
+      transition={{ duration: 0.2, ease: 'easeInOut' }}
       className="overflow-hidden"
     >
       <div className="mt-3 grid grid-cols-2 gap-2">
@@ -35,22 +35,22 @@ export function SoundSelector({
                 onSelect(sound.id)
                 onPreview(sound.id)
               }}
-              className={`flex items-center justify-between rounded-lg px-3 py-2.5 border transition-all duration-200 ${
-                isSelected
-                  ? 'bg-white/10 border-white/15'
-                  : 'bg-white/3 border-white/5 hover:bg-white/6'
-              }`}
+              className={`flex items-center justify-between rounded-lg px-3 py-2.5 border transition-colors duration-200 focus-ring
+                ${
+                  isSelected
+                    ? 'bg-white/10 border-white/15'
+                    : 'bg-white/5 border-white/10 hover:bg-white/10'
+                }`}
             >
               <div className="flex items-center gap-2">
                 <Music
                   size={12}
                   strokeWidth={1.5}
-                  className={`transition-colors duration-200 ${isSelected ? 'text-white' : 'text-white/40'}`}
+                  className={`transition-colors duration-200 ${isSelected ? 'text-white' : 'text-white/25'}`}
                 />
                 <span
-                  className={`text-xs transition-colors duration-200 ${
-                    isSelected ? 'text-white font-medium' : 'text-white/50'
-                  }`}
+                  className={`text-xs transition-colors duration-200
+                    ${isSelected ? 'text-white font-medium' : 'text-white/50'}`}
                 >
                   {sound.name}
                 </span>

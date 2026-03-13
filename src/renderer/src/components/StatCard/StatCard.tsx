@@ -13,24 +13,18 @@ export function StatCard({
   subtext,
   variant = 'primary'
 }: StatCardProps): React.JSX.Element {
-  if (variant === 'secondary') {
-    return (
-      <div className="rounded-xl bg-white/2 px-4 py-3 border border-white/3 flex flex-col items-center justify-center text-center">
-        <p className="text-[0.625rem] text-white/25 uppercase tracking-widest mb-0.5 whitespace-nowrap">
-          {label}
-        </p>
-        <p className="text-lg font-light text-white/80">{value}</p>
-      </div>
-    )
-  }
+  const isSecondary = variant === 'secondary'
 
   return (
-    <div className="rounded-xl bg-white/3 p-4 border border-white/4 flex flex-col items-center justify-center text-center">
-      <p className="text-[0.625rem] text-white/30 uppercase tracking-widest mb-1 whitespace-nowrap">
+    <div
+      className={`rounded-xl p-4 border flex flex-col items-center justify-center text-center
+        ${isSecondary ? 'bg-white/3 border-white/5 px-4 py-3' : 'bg-white/5 border-white/5'}`}
+    >
+      <p className="text-[0.625rem] text-white/25 uppercase tracking-widest mb-1 whitespace-nowrap">
         {label}
       </p>
-      <p className="text-2xl font-light text-text-main">{value}</p>
-      {subtext && <p className="text-[0.625rem] text-white/20 mt-0.5">{subtext}</p>}
+      <p className={`font-light text-text-main ${isSecondary ? 'text-lg' : 'text-2xl'}`}>{value}</p>
+      {subtext && <p className="text-[0.625rem] text-white/25 mt-0.5">{subtext}</p>}
     </div>
   )
 }

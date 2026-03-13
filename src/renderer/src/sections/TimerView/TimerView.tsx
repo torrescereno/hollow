@@ -29,22 +29,22 @@ export function TimerView({
   const displayMinutes = Math.ceil(timeLeft / 60).toString()
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.96 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.96 }}
-      transition={{ duration: 0.15, ease: 'easeInOut' }}
-      className="absolute inset-0 flex flex-col items-center justify-center p-5 transform-gpu backface-hidden"
-    >
-      <div className="relative flex items-center justify-center w-full h-full">
+    <main className="absolute inset-0 flex flex-col items-center justify-center p-5 transform-gpu backface-hidden">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.96 }}
+        transition={{ duration: 0.15, ease: 'easeInOut' }}
+        className="relative flex items-center justify-center w-full h-full"
+      >
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          transition={{ duration: 0.2, ease: 'easeInOut' }}
           className="absolute flex flex-col items-center pb-4"
         >
           {timerPhase === 'rest' && (
-            <span className="absolute text-[10px] font-mono text-white/35 tracking-widest uppercase">
+            <span className="absolute text-[10px] font-mono text-white/25 tracking-widest uppercase">
               descanso
             </span>
           )}
@@ -52,7 +52,7 @@ export function TimerView({
             <Timer minutes={displayMinutes} isRunning={isRunning} />
           </div>
         </motion.div>
-      </div>
+      </motion.div>
       <Controls
         isPinned={isPinned}
         isRunning={isRunning}
@@ -63,6 +63,6 @@ export function TimerView({
         onSkipRest={onSkipRest}
         onOpenMenu={onOpenMenu}
       />
-    </motion.div>
+    </main>
   )
 }

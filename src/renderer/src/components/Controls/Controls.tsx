@@ -5,6 +5,35 @@ import type { TimerPhase } from '../../hooks/useTimer'
 
 const collapseTransition = { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const }
 
+interface ControlButtonProps {
+  children: React.ReactNode
+  onClick: () => void
+  title: string
+  isActive?: boolean
+}
+
+function ControlButton({
+  children,
+  onClick,
+  title,
+  isActive = false
+}: ControlButtonProps): React.JSX.Element {
+  const baseClasses =
+    'shrink-0 rounded-full flex items-center justify-center active:scale-95 p-2 focus-ring transition-colors duration-200'
+
+  return (
+    <button
+      onClick={onClick}
+      title={title}
+      className={`${baseClasses} ${
+        isActive ? 'text-white bg-white/10' : 'text-white/25 hover:text-white/50 hover:bg-white/5'
+      }`}
+    >
+      {children}
+    </button>
+  )
+}
+
 interface ControlsProps {
   isPinned: boolean
   isRunning: boolean
@@ -30,7 +59,6 @@ export function Controls({
 
   return (
     <div className="app-no-drag flex items-center mt-auto">
-      {/* Left section: pin + reset (focus only) */}
       <motion.div
         initial={false}
         animate={
@@ -41,51 +69,33 @@ export function Controls({
         transition={collapseTransition}
         className="flex items-center gap-4 overflow-hidden"
       >
-        <button
+        <ControlButton
           onClick={onTogglePin}
           title={isPinned ? 'Unpin window' : 'Pin window'}
-          className={`shrink-0 rounded-full transition-all duration-200 flex items-center justify-center active:scale-95 p-2 ${
-            isPinned
-              ? 'text-text-main bg-white/10'
-              : 'text-white/25 hover:text-white/60 hover:bg-white/5'
-          }`}
+          isActive={isPinned}
         >
           {isPinned ? <PinOff size={15} strokeWidth={1.5} /> : <Pin size={15} strokeWidth={1.5} />}
-        </button>
+        </ControlButton>
 
-        <button
-          onClick={onReset}
-          title="Reset"
-          className="shrink-0 rounded-full transition-all duration-200 flex items-center justify-center active:scale-95 p-2 text-white/20 hover:text-white/50 hover:bg-white/5"
-        >
+        <ControlButton onClick={onReset} title="Reset">
           <RotateCcw size={15} strokeWidth={1.5} />
-        </button>
+        </ControlButton>
       </motion.div>
 
-      {/* Center: play/pause */}
-      <motion.button
+      <button
         onClick={onToggleTimer}
-        animate={{
-          boxShadow: isRunning
-            ? [
-                '0 0 0px rgba(255,255,255,0)',
-                '0 0 15px rgba(255,255,255,0.12)',
-                '0 0 0px rgba(255,255,255,0)'
-              ]
-            : '0 0 0px rgba(255,255,255,0)'
-        }}
-        transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
         title={isRunning ? 'Pause' : 'Start'}
-        className="shrink-0 flex items-center justify-center rounded-full bg-text-main text-black transition-all duration-200 active:scale-95 hover:bg-white/90 w-10 h-10"
+        className={`shrink-0 flex items-center justify-center rounded-full bg-text-main text-black transition-all duration-200 active:scale-95 hover:bg-white/90 w-10 h-10 focus-ring ${
+          isRunning ? 'shadow-[0_0_20px_rgba(255,255,255,0.15)]' : ''
+        }`}
       >
         {isRunning ? (
           <Pause size={16} fill="currentColor" />
         ) : (
           <Play size={16} fill="currentColor" className="ml-0.5" />
         )}
-      </motion.button>
+      </button>
 
-      {/* Right section: menu (focus) or skip (rest) */}
       <motion.div
         initial={false}
         animate={{ width: 'auto', opacity: 1, marginLeft: 16 }}
@@ -93,21 +103,13 @@ export function Controls({
         className="overflow-hidden"
       >
         {isRest ? (
-          <button
-            onClick={onSkipRest}
-            title="Skip rest"
-            className="shrink-0 rounded-full transition-all duration-200 flex items-center justify-center active:scale-95 p-2 text-white/20 hover:text-white/50 hover:bg-white/5"
-          >
+          <ControlButton onClick={onSkipRest} title="Skip rest">
             <SkipForward size={15} strokeWidth={1.5} />
-          </button>
+          </ControlButton>
         ) : (
-          <button
-            onClick={onOpenMenu}
-            title="Menu"
-            className="shrink-0 rounded-full transition-all duration-200 flex items-center justify-center active:scale-95 p-2 text-white/20 hover:text-white/50 hover:bg-white/5"
-          >
+          <ControlButton onClick={onOpenMenu} title="Menu">
             <MenuIcon size={15} strokeWidth={1.5} />
-          </button>
+          </ControlButton>
         )}
       </motion.div>
     </div>

@@ -32,8 +32,8 @@ export function MenuView({
   onBack
 }: MenuViewProps): React.JSX.Element {
   const menuItems = [
-    { key: 'stats' as const, label: 'Estadisticas', Icon: BarChart2 },
-    { key: 'config' as const, label: 'Configuracion', Icon: Settings }
+    { key: 'stats' as const, label: 'Estadísticas', Icon: BarChart2 },
+    { key: 'config' as const, label: 'Configuración', Icon: Settings }
   ]
 
   return (
@@ -44,29 +44,31 @@ export function MenuView({
       transition={{ duration: 0.15, ease: 'easeInOut' }}
       className="absolute inset-0 flex bg-bg-window transform-gpu backface-hidden"
     >
-      <div className="app-drag w-56 shrink-0 border-r border-white/5 bg-bg-window p-6 flex flex-col">
+      <aside className="app-drag w-56 shrink-0 border-r border-white/5 bg-bg-window p-6 flex flex-col">
         <BackButton onClick={onBack} />
         <MenuNav activeTab={menuTab} onTabChange={onMenuTabChange} items={menuItems} />
-      </div>
+      </aside>
 
-      <div className="flex-1 p-10 bg-bg-window overflow-hidden flex flex-col">
+      <section className="flex-1 p-10 bg-bg-window overflow-hidden flex flex-col">
         <AnimatePresence mode="wait">
           <motion.div
             key={menuTab}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
             className="flex flex-col flex-1 min-h-0"
           >
-            <h2 className="text-2xl font-light tracking-[-0.025em] text-text-main mb-1">
-              {menuTab === 'stats' ? 'Estadisticas' : 'Configuracion'}
-            </h2>
-            <p className="text-xs text-white/25 tracking-[0.025em] mb-6">
-              {menuTab === 'stats'
-                ? 'Tu historial de sesiones de enfoque'
-                : 'Ajusta tus preferencias de temporizador'}
-            </p>
+            <header>
+              <h1 className="text-2xl font-light tracking-[-0.025em] text-text-main mb-1">
+                {menuTab === 'stats' ? 'Estadísticas' : 'Configuración'}
+              </h1>
+              <p className="text-xs text-white/25 tracking-[0.025em] mb-6">
+                {menuTab === 'stats'
+                  ? 'Tu historial de sesiones de enfoque'
+                  : 'Ajusta tus preferencias de temporizador'}
+              </p>
+            </header>
 
             {menuTab === 'stats' ? (
               <StatsSection stats={stats} onClear={onClearSessions} onExportCsv={onExportCsv} />
@@ -80,7 +82,7 @@ export function MenuView({
             )}
           </motion.div>
         </AnimatePresence>
-      </div>
+      </section>
     </motion.div>
   )
 }

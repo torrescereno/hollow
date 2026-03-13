@@ -38,7 +38,7 @@ export function StatsSection({
 
   return (
     <div className="app-no-drag flex flex-1 flex-col gap-5 overflow-y-auto pr-3">
-      <div className="streak-card bg-white/5 rounded-xl p-5 border border-white/10">
+      <div className="streak-card bg-white/8 rounded-xl p-5 border border-white/10">
         <div className="flex justify-between items-center mb-4">
           <div className="flex flex-col gap-1">
             <span className="text-xs text-white/40 uppercase tracking-wider">Racha Actual</span>
@@ -51,11 +51,12 @@ export function StatsSection({
           {stats.weeklyActivity.map((d, i) => (
             <div
               key={i}
-              className={`flex-1 h-8 rounded-md flex items-center justify-center text-xs font-medium transition-all ${
-                d.active
-                  ? 'bg-white text-black shadow-lg shadow-white/10'
-                  : 'bg-white/5 text-white/20'
-              } ${d.isToday ? 'relative' : ''}`}
+              className={`flex-1 h-8 rounded-md flex items-center justify-center text-xs font-medium transition-colors
+                ${
+                  d.active
+                    ? 'bg-white text-black shadow-lg shadow-white/10'
+                    : 'bg-white/5 text-white/25'
+                } ${d.isToday ? 'relative' : ''}`}
             >
               {d.day}
               {d.isToday && (
@@ -94,16 +95,15 @@ export function StatsSection({
         <div className="flex items-center gap-4 mt-4">
           <button
             onClick={onExportCsv}
-            className="app-no-drag flex items-center gap-2 text-[0.6875rem] transition-colors duration-200 text-white/15 hover:text-white/50"
+            className="app-no-drag flex items-center gap-2 text-[0.6875rem] transition-colors duration-200 text-white/25 hover:text-white/50 focus-ring"
           >
             <Download size={12} strokeWidth={1.5} />
             Exportar CSV
           </button>
           <button
             onClick={handleClear}
-            className={`app-no-drag flex items-center gap-2 text-[0.6875rem] transition-colors duration-200 ${
-              confirmClear ? 'text-red-400/70' : 'text-white/15 hover:text-red-400/50'
-            }`}
+            className={`app-no-drag flex items-center gap-2 text-[0.6875rem] transition-colors duration-200 focus-ring
+              ${confirmClear ? 'text-red-400/75' : 'text-white/25 hover:text-red-400/50'}`}
           >
             <Trash2 size={12} strokeWidth={1.5} />
             {confirmClear ? 'Clic para confirmar' : 'Borrar datos'}
