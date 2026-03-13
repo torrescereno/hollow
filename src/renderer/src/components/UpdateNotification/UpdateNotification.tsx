@@ -49,7 +49,7 @@ export function UpdateNotification({
     const seconds = countdown % 60
 
     return (
-      <div className="absolute left-0 right-0 top-0 z-50 mx-1 mt-1">
+      <div className="app-no-drag absolute left-0 right-0 top-0 z-50 mx-1 mt-1">
         <div className="flex flex-col gap-1.5 rounded-lg bg-red-900/95 px-2.5 py-2 text-white backdrop-blur-sm">
           <div className="flex items-center gap-1.5">
             <svg
@@ -93,7 +93,7 @@ export function UpdateNotification({
 
   if (isSecurity) {
     return (
-      <div className="absolute left-0 right-0 top-0 z-40 mx-1 mt-1">
+      <div className="app-no-drag absolute left-0 right-0 top-0 z-40 mx-1 mt-1">
         <div className="flex items-center gap-1.5 rounded-lg bg-orange-900/90 px-2.5 py-1.5 text-xs backdrop-blur-sm">
           <svg
             className="h-3.5 w-3.5 shrink-0 text-orange-400"
@@ -134,7 +134,7 @@ export function UpdateNotification({
   }
 
   return (
-    <div className="absolute left-0 right-0 top-0 z-40 mx-1 mt-1">
+    <div className="app-no-drag absolute left-0 right-0 top-0 z-40 mx-1 mt-1">
       <div className="flex items-center gap-1.5 rounded-lg bg-white/10 px-2.5 py-1.5 text-xs backdrop-blur-sm">
         <svg
           className="h-3.5 w-3.5 shrink-0 text-white/60"
