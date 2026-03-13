@@ -93,7 +93,7 @@ export function StatsSection({
 
       {(stats.total?.sessions || 0) > 0 && (
         <div className="flex items-center gap-4 mt-4">
-          <Button variant="clear" onClick={onExportCsv}>
+          <Button variant="export" onClick={onExportCsv}>
             <Download size={12} strokeWidth={1.5} />
             Exportar CSV
           </Button>

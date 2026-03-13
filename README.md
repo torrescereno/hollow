@@ -39,11 +39,13 @@
 
 ## ✨ Características
 
-| ⏱️ **Timer Inteligente**                      | 📊 **Estadísticas Detalladas**          |
-| :-------------------------------------------- | :-------------------------------------- |
-| Intervalos personalizables de focus y break   | Historial completo de sesiones y rachas |
-| **⚙️ Configuración Flexible**                 | **💾 Storage Local**                    |
-| Duración, sonidos y comportamiento de ventana | Datos privados, sin conexión a internet |
+| ⏱️ **Timer Inteligente**                      | 📊 **Estadísticas Detalladas**                                |
+| :-------------------------------------------- | :------------------------------------------------------------ |
+| Intervalos personalizables de focus y break   | Historial completo de sesiones y rachas                       |
+| **⚙️ Configuración Flexible**                 | **🔄 Actualizaciones Automáticas**                            |
+| Duración, sonidos y comportamiento de ventana | Updates inteligentes con prioridad crítica, security y normal |
+| **💾 Storage Local**                          |                                                               |
+| Datos privados, sin conexión a internet       |                                                               |
 
 ---
 
@@ -86,8 +88,9 @@ Hollow sigue una **arquitectura en capas** con separación clara de responsabili
 graph TB
     subgraph Electron
         MAIN[Main Process]
+        AUTOUPDATE[AutoUpdater<br/>priority polling<br/>critical handling]
+        IPC[IPC Handlers<br/>app, window, config<br/>session, update]
         PRELOAD[Preload]
-        IPC[IPC Handlers<br/>app, window<br/>config, session]
     end
 
     subgraph React App
@@ -111,10 +114,11 @@ graph TB
             MENU_FOOTER[MenuFooter]
             SOUND_SELECTOR[SoundSelector]
             BACK[BackButton]
+            UPDATE_NOTIF[UpdateNotification]
         end
 
         subgraph State
-            HOOKS[Hooks<br/>useTimer, useConfig<br/>useSessions, useStats<br/>usePinned, useSound<br/>useViewTransition]
+            HOOKS[Hooks<br/>useTimer, useConfig<br/>useSessions, useStats<br/>usePinned, useSound<br/>useViewTransition<br/>useUpdate]
             SERVICES[Services<br/>config, sessions<br/>electron, window]
         end
 
@@ -133,9 +137,12 @@ graph TB
     MAIN --> PRELOAD
     PRELOAD --> APP
     IPC --> MAIN
+    AUTOUPDATE --> MAIN
+    AUTOUPDATE --> |update-status| APP
 
     APP --> TIMER
     APP --> MENU
+    APP --> UPDATE_NOTIF
     MENU --> CONFIG
     MENU --> STATS
 
@@ -161,6 +168,47 @@ graph TB
     DB_REPO --> DB_SCHEMA
     STORE --> MAIN
 ```
+
+### Update System
+
+```mermaid
+sequenceDiagram
+    participant App as React App
+    participant Main as Main Process
+    participant GitHub as GitHub Releases
+    participant User as User
+
+    App->>Main: setupAutoUpdater()
+    Main->>GitHub: Check for updates (polling)
+
+    alt Normal Update
+        GitHub-->>Main: Update available (metadata)
+        Main->>App: update-status (normal)
+        App->>User: Show banner notification
+        User->>App: Download & Restart
+    else Security Update
+        GitHub-->>Main: Update available (security)
+        Main->>Main: Auto-download
+        Main->>App: update-status (security)
+        App->>User: Show orange banner
+        User->>App: Restart now or later
+    else Critical Update
+        GitHub-->>Main: Update available (critical)
+        Main->>Main: Auto-download
+        Main->>App: update-status (critical)
+        App->>User: Show blocking modal
+        User->>App: Restart now or snooze 5min
+        App->>Main: forceRestart() or snooze()
+    end
+```
+
+### Update Priority Levels
+
+| Prioridad    | Intervalo | Comportamiento                                   |
+| ------------ | --------- | ------------------------------------------------ |
+| **Normal**   | 60 min    | Check periódico, notificar al usuario            |
+| **Security** | 15 min    | Auto-descargar, notificar con acción recomendada |
+| **Critical** | 5 min     | Auto-descargar, modal bloqueante con countdown   |
 
 ### Resumen de Capas
 

@@ -15,7 +15,7 @@ export function MenuFooter(): React.JSX.Element {
 
   return (
     <div className="app-no-drag mt-auto pt-4 border-t border-white/5">
-      <div className="flex items-center gap-3 px-3">
+      <div className="flex items-center justify-between gap-3 px-3">
         <button
           onClick={handleGithubClick}
           className="text-white/25 hover:text-white/40 transition-colors duration-200 cursor-pointer focus-ring rounded"
