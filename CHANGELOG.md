@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/torrescereno/hollow/compare/v1.1.1...v1.2.0) (2026-03-13)
+
+
+### Features
+
+* add app screenshots to readme ([3c41f1f](https://github.com/torrescereno/hollow/commit/3c41f1f77ce957d64e584ecc18bcbd6bf9b9f138))
+* add code coverage badge and codecov integration ([b2695d4](https://github.com/torrescereno/hollow/commit/b2695d4bb4d45534a0a94ee74861087de8d9baf2))
+* alert config ([1f760eb](https://github.com/torrescereno/hollow/commit/1f760ebbc389587e3715bbc63a9a5e06674324ad))
+
+
+### Bug Fixes
+
+* resize windows ([b6db515](https://github.com/torrescereno/hollow/commit/b6db515f6fed6626f002cf17e6d01c0ca1777e57))
+
 ## [1.1.1](https://github.com/torrescereno/hollow/compare/v1.1.0...v1.1.1) (2026-03-13)
 
 
