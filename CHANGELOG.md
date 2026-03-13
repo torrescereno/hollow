@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/torrescereno/hollow/compare/v1.2.0...v1.3.0) (2026-03-13)
+
+
+### Features
+
+* update notifications ([69bba7e](https://github.com/torrescereno/hollow/commit/69bba7eccddd1656884a35d5aec66b7718473790))
+* update readme ([7bebd6b](https://github.com/torrescereno/hollow/commit/7bebd6bca153366d51f9968d76ad1a55b5452f5c))
+
 ## [1.2.0](https://github.com/torrescereno/hollow/compare/v1.1.1...v1.2.0) (2026-03-13)
 
 
