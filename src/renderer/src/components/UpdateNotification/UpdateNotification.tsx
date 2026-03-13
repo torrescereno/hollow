@@ -83,7 +83,7 @@ export function UpdateNotification({
               disabled={!isDownloaded}
               className="flex-1 rounded bg-white px-2 py-1 text-[10px] font-medium text-red-900 transition-colors hover:bg-white/90 disabled:opacity-50"
             >
-              {isDownloaded ? 'Restart' : 'Downloading...'}
+              {isDownloaded ? 'Reiniciar' : 'Descargando...'}
             </button>
           </div>
         </div>

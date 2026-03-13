@@ -23,7 +23,8 @@ describe('useTimer', () => {
         focusMinutes: 25,
         restMinutes: 5,
         soundEnabled: true,
-        selectedSound: 'bell'
+        selectedSound: 'bell',
+        confettiEnabled: true
       }
     }
   })

@@ -3,4 +3,5 @@ export interface AppConfig {
   restMinutes: number
   soundEnabled: boolean
   selectedSound: string
+  confettiEnabled: boolean
 }

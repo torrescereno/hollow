@@ -109,8 +109,8 @@ function showLinuxManualUpdateDialog(version: string): void {
     .showMessageBox({
       type: 'info',
       title: 'Actualización disponible',
-      message: `Una nueva versión (${version}) esta disponible. Por favor descargue desde el repositorio de github.`,
-      buttons: ['Descargar', 'Despues']
+      message: `Una nueva versión (${version}) esta disponible. Por favor descargue desde el repositorio de GitHub.`,
+      buttons: ['Descargar', 'En otro momento']
     })
     .then((result) => {
       if (result.response === 0) {

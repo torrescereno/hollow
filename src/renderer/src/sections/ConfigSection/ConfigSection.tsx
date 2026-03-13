@@ -106,6 +106,13 @@ export function ConfigSection({
         )}
       </div>
 
+      <Toggle
+        label="Confetti"
+        subtitle="Lanzar confetti al completar sesión de enfoque"
+        isActive={config.confettiEnabled}
+        onToggle={() => onUpdate({ confettiEnabled: !config.confettiEnabled })}
+      />
+
       <Button
         variant="update"
         onClick={handleCheckUpdate}

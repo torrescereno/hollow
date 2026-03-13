@@ -51,6 +51,7 @@ export default function App(): React.JSX.Element {
               isRunning={isRunning}
               isPinned={isPinned}
               timerPhase={timerPhase}
+              confettiEnabled={config.confettiEnabled}
               onToggleTimer={toggleTimer}
               onResetTimer={resetTimer}
               onSkipRest={skipRest}

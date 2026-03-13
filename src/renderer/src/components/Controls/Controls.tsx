@@ -71,20 +71,20 @@ export function Controls({
       >
         <ControlButton
           onClick={onTogglePin}
-          title={isPinned ? 'Unpin window' : 'Pin window'}
+          title={isPinned ? 'Desanclar Ventana' : 'Anclar ventana'}
           isActive={isPinned}
         >
           {isPinned ? <PinOff size={15} strokeWidth={1.5} /> : <Pin size={15} strokeWidth={1.5} />}
         </ControlButton>
 
-        <ControlButton onClick={onReset} title="Reset">
+        <ControlButton onClick={onReset} title="Reiniciar">
           <RotateCcw size={15} strokeWidth={1.5} />
         </ControlButton>
       </motion.div>
 
       <button
         onClick={onToggleTimer}
-        title={isRunning ? 'Pause' : 'Start'}
+        title={isRunning ? 'Pausar' : 'Iniciar'}
         className={`shrink-0 flex items-center justify-center rounded-full bg-text-main text-black transition-all duration-200 active:scale-95 hover:bg-white/90 w-10 h-10 focus-ring ${
           isRunning ? 'shadow-[0_0_20px_rgba(255,255,255,0.15)]' : ''
         }`}
@@ -103,7 +103,7 @@ export function Controls({
         className="overflow-hidden"
       >
         {isRest ? (
-          <ControlButton onClick={onSkipRest} title="Skip rest">
+          <ControlButton onClick={onSkipRest} title="Saltar descanso">
             <SkipForward size={15} strokeWidth={1.5} />
           </ControlButton>
         ) : (

@@ -25,7 +25,8 @@ const store = new Store<StoreSchema>({
       focusMinutes: 25,
       restMinutes: 2,
       soundEnabled: true,
-      selectedSound: 'bell'
+      selectedSound: 'bell',
+      confettiEnabled: true
     }
   }
 })

@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
+import type confetti from 'canvas-confetti'
 import { Timer, Controls } from '../../components'
+import { createConfetti } from '../../utils'
 import type { TimerPhase } from '../../hooks/useTimer'
 
 interface TimerViewProps {
@@ -8,6 +10,7 @@ interface TimerViewProps {
   isRunning: boolean
   isPinned: boolean
   timerPhase: TimerPhase
+  confettiEnabled: boolean
   onToggleTimer: () => void
   onResetTimer: () => void
   onSkipRest: () => void
@@ -20,12 +23,35 @@ export function TimerView({
   isRunning,
   isPinned,
   timerPhase,
+  confettiEnabled,
   onToggleTimer,
   onResetTimer,
   onSkipRest,
   onTogglePin,
   onOpenMenu
 }: TimerViewProps): React.JSX.Element {
+  const prevPhaseRef = useRef<TimerPhase>(timerPhase)
+  const confettiFnRef = useRef<confetti.CreateTypes | null>(null)
+
+  const canvasRef = useCallback((canvas: HTMLCanvasElement | null) => {
+    if (canvas) {
+      confettiFnRef.current = createConfetti(canvas)
+    } else {
+      confettiFnRef.current = null
+    }
+  }, [])
+
+  useEffect(() => {
+    if (prevPhaseRef.current === 'focus' && timerPhase === 'rest' && confettiEnabled) {
+      confettiFnRef.current?.({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      })
+    }
+    prevPhaseRef.current = timerPhase
+  }, [timerPhase, confettiEnabled])
+
   const displayMinutes = Math.ceil(timeLeft / 60).toString()
   const showTimer = timerPhase !== 'rest' || isRunning
 
@@ -37,6 +63,11 @@ export function TimerView({
       transition={{ duration: 0.12, ease: 'easeOut' }}
       className="absolute inset-0 flex flex-col items-center justify-center p-5 transform-gpu backface-hidden"
     >
+      <canvas
+        ref={canvasRef}
+        className="pointer-events-none absolute inset-0 z-50"
+        style={{ width: '100%', height: '100%' }}
+      />
       <div className="relative flex items-center justify-center w-full h-full">
         <div className="absolute flex flex-col items-center pb-4">
           <div className="flex">

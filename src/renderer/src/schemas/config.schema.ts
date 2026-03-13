@@ -18,7 +18,8 @@ export const DEFAULT_CONFIG: AppConfig = {
   focusMinutes: 25,
   restMinutes: 2,
   soundEnabled: true,
-  selectedSound: 'bell'
+  selectedSound: 'bell',
+  confettiEnabled: true
 }
 
 export const FOCUS_WARNING_THRESHOLD = 25
