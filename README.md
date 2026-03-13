@@ -53,13 +53,15 @@
 
 ### Frontend
 
-| Tecnología          | Propósito       |
-| ------------------- | --------------- |
-| **React 19**        | Framework UI    |
-| **TypeScript**      | Tipado estático |
-| **Tailwind CSS v4** | Estilos         |
-| **Motion**          | Animaciones     |
-| **Lucide React**    | Iconos          |
+| Tecnología          | Propósito                   |
+| ------------------- | --------------------------- |
+| **React 19**        | Framework UI                |
+| **TypeScript**      | Tipado estático             |
+| **Tailwind CSS v4** | Estilos                     |
+| **shadcn/ui**       | Componentes UI primitivos   |
+| **Radix UI**        | Primitivas de accesibilidad |
+| **Motion**          | Animaciones                 |
+| **Lucide React**    | Iconos                      |
 
 ### Desktop
 
@@ -115,6 +117,15 @@ graph TB
             SOUND_SELECTOR[SoundSelector]
             BACK[BackButton]
             UPDATE_NOTIF[UpdateNotification]
+        end
+
+        subgraph UI Primitives[UI Primitives - shadcn/ui]
+            UI_BUTTON[Button<br/>icon, play, back<br/>clear, export, update]
+            UI_SWITCH[Switch]
+            UI_SLIDER[Slider]
+            UI_TABS[Tabs]
+            UI_CARD[Card]
+            UI_ALERT[Alert]
         end
 
         subgraph State
@@ -212,14 +223,43 @@ sequenceDiagram
 
 ### Resumen de Capas
 
-| Capa           | Responsabilidad                    | Tecnologías                 |
-| -------------- | ---------------------------------- | --------------------------- |
-| **Views**      | UI y presentación                  | React, TypeScript           |
-| **Components** | Primitivos UI reutilizables        | React                       |
-| **State**      | Lógica de negocio y flujo de datos | Custom Hooks                |
-| **Services**   | Integraciones externas             | Electron API                |
-| **Data**       | Persistencia y esquemas            | Electron Store, Zod         |
-| **Database**   | Almacenamiento estructurado        | Better-SQLite3, Drizzle ORM |
+| Capa           | Responsabilidad                    | Tecnologías                       |
+| -------------- | ---------------------------------- | --------------------------------- |
+| **Views**      | UI y presentación                  | React, TypeScript                 |
+| **Components** | Componentes de la aplicación       | React, shadcn/ui                  |
+| **Primitives** | Primitivas UI reutilizables        | shadcn/ui, Radix UI, Tailwind CSS |
+| **State**      | Lógica de negocio y flujo de datos | Custom Hooks                      |
+| **Services**   | Integraciones externas             | Electron API                      |
+| **Data**       | Persistencia y esquemas            | Electron Store, Zod               |
+| **Database**   | Almacenamiento estructurado        | Better-SQLite3, Drizzle ORM       |
+
+---
+
+## 🎨 Design System
+
+Hollow utiliza **shadcn/ui** como base para los componentes UI, construido sobre **Radix UI** para accesibilidad y **Tailwind CSS v4** para estilos.
+
+### Componentes UI
+
+| Componente | Basado en        | Descripción                                          |
+| ---------- | ---------------- | ---------------------------------------------------- |
+| **Button** | shadcn/ui Button | 6 variantes: icon, play, back, clear, export, update |
+| **Switch** | Radix UI Switch  | Toggle de configuración                              |
+| **Slider** | Radix UI Slider  | Control deslizante para duraciones                   |
+| **Tabs**   | Radix UI Tabs    | Navegación entre secciones                           |
+| **Card**   | shadcn/ui Card   | Contenedor de estadísticas                           |
+| **Alert**  | shadcn/ui Alert  | Notificaciones de advertencia                        |
+
+### Tema Oscuro
+
+El diseño minimalista usa un sistema de opacidad sobre fondo oscuro:
+
+```css
+--background: #0f0f0f;
+--foreground: #ffffff;
+--secondary: rgb(255 255 255 / 0.05);
+--accent: rgb(255 255 255 / 0.1);
+```
 
 ---
 
