@@ -260,18 +260,6 @@ bun install
 bun run dev
 ```
 
-### Build para Producción
-
-```bash
-# Build para el SO actual
-bun run build
-
-# Builds específicos por plataforma
-bun run build:win    # Windows (.exe)
-bun run build:mac    # macOS (.dmg)
-bun run build:linux  # Linux (.AppImage, .deb)
-```
-
 <details>
 <summary><b>📖 Scripts de Desarrollo</b></summary>
 
