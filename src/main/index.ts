@@ -2,7 +2,7 @@ import { app, BrowserWindow, nativeImage } from 'electron'
 import Store from 'electron-store'
 import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
-import { setupAutoUpdater, startPolling } from './autoUpdater'
+import { setupAutoUpdater, setMainWindow, startPolling } from './autoUpdater'
 import { initDatabase, closeDatabase } from '../database/client'
 import {
   registerSessionIPC,
@@ -123,13 +123,16 @@ if (!gotTheLock) {
     createWindow()
 
     if (!is.dev) {
-      setupAutoUpdater(mainWindow)
+      if (mainWindow) setupAutoUpdater(mainWindow)
       startPolling()
     }
 
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) {
         createWindow()
+        if (mainWindow && !is.dev) {
+          setMainWindow(mainWindow)
+        }
       }
     })
   })

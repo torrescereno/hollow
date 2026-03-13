@@ -1,15 +1,8 @@
 import type { AppConfig } from './config.schema'
 import type { SessionRecord, FullSessionStats } from './session.schema'
+import type { UpdateInfo, UpdatePriority } from '../../../shared/types'
 
-export type UpdatePriority = 'normal' | 'security' | 'critical'
-
-export interface UpdateStatus {
-  available: boolean
-  version?: string
-  priority?: UpdatePriority
-  message?: string
-  progress?: number
-}
+export type { UpdateInfo, UpdatePriority }
 
 export interface ElectronAPI {
   setAlwaysOnTop: (isPinned: boolean) => Promise<boolean>
@@ -31,13 +24,9 @@ export interface ElectronAPI {
   getAppVersion: () => Promise<string>
   update: {
     check: () => Promise<boolean>
-    getStatus: () => Promise<{
-      priority: UpdatePriority
-      hasCriticalUpdate: boolean
-      criticalDownloaded: boolean
-    }>
+    getStatus: () => Promise<UpdateInfo>
     restart: () => Promise<boolean>
     snooze: () => Promise<boolean>
-    onStatus: (callback: (status: UpdateStatus) => void) => void
+    onStatus: (callback: (status: UpdateInfo) => void) => () => void
   }
 }

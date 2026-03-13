@@ -1,44 +1,29 @@
 import { useState, useEffect, useCallback } from 'react'
-import type { UpdateStatus, UpdatePriority } from '../schemas/electron.schema'
-
-export interface UpdateInfo {
-  available: boolean
-  version?: string
-  priority?: UpdatePriority
-  message?: string
-  progress?: number
-}
+import type { UpdateInfo } from '../schemas/electron.schema'
 
 export function useUpdate(): {
   updateInfo: UpdateInfo | null
   checkForUpdates: () => Promise<void>
   restartNow: () => Promise<void>
   snoozeUpdate: () => Promise<void>
+  dismissUpdate: () => void
 } {
   const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(null)
 
   useEffect(() => {
     if (!window.electronAPI?.update) return
 
-    const handleStatus = (status: UpdateStatus): void => {
+    const unsubscribe = window.electronAPI.update.onStatus((status: UpdateInfo) => {
       setUpdateInfo(status)
-    }
-
-    window.electronAPI.update.onStatus(handleStatus)
+    })
 
     window.electronAPI.update.getStatus().then((status) => {
-      if (status.hasCriticalUpdate || status.priority !== 'normal') {
-        setUpdateInfo({
-          available: true,
-          priority: status.priority,
-          version: undefined
-        })
+      if (status.available) {
+        setUpdateInfo(status)
       }
     })
 
-    return () => {
-      // IPC listeners cleanup is handled by the main process
-    }
+    return unsubscribe
   }, [])
 
   const checkForUpdates = useCallback(async (): Promise<void> => {
@@ -53,13 +38,19 @@ export function useUpdate(): {
 
   const snoozeUpdate = useCallback(async (): Promise<void> => {
     if (!window.electronAPI?.update) return
+    setUpdateInfo(null)
     await window.electronAPI.update.snooze()
+  }, [])
+
+  const dismissUpdate = useCallback((): void => {
+    setUpdateInfo(null)
   }, [])
 
   return {
     updateInfo,
     checkForUpdates,
     restartNow,
-    snoozeUpdate
+    snoozeUpdate,
+    dismissUpdate
   }
 }

@@ -14,4 +14,5 @@ export interface UpdateInfo {
   priority?: UpdatePriority
   message?: string
   progress?: number
+  downloaded?: boolean
 }
