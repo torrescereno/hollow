@@ -1,9 +1,18 @@
 import React, { useState } from 'react'
 import { AnimatePresence } from 'motion/react'
-import { useConfig, usePinned, useSessions, useStats, useTimer, useViewTransition } from './hooks'
+import {
+  useConfig,
+  usePinned,
+  useSessions,
+  useStats,
+  useTimer,
+  useViewTransition,
+  useUpdate
+} from './hooks'
 import type { MenuTab } from './schemas'
 import { MenuView, TimerView } from './sections'
 import { TIMER_SIZE, MENU_SIZE } from './constants'
+import { UpdateNotification } from './components'
 
 export default function App(): React.JSX.Element {
   const [menuTab, setMenuTab] = useState<MenuTab>('stats')
@@ -17,11 +26,14 @@ export default function App(): React.JSX.Element {
   const { timeLeft, isRunning, timerPhase, toggleTimer, resetTimer, skipRest, setTimeLeft } =
     useTimer(config.focusMinutes, config.restMinutes, configRef, logSession)
 
+  const { updateInfo, restartNow, snoozeUpdate } = useUpdate()
+
   const size = view === 'menu' ? MENU_SIZE : TIMER_SIZE
   const borderRadius = view === 'menu' ? 'rounded-[2rem]' : 'rounded-[1.5rem]'
 
   return (
     <div className="app-drag flex h-full w-full items-center justify-center">
+      <UpdateNotification updateInfo={updateInfo} onRestart={restartNow} onSnooze={snoozeUpdate} />
       <div
         style={{ width: size.w, height: size.h }}
         className={`window-container relative overflow-hidden bg-bg-window border-none ${borderRadius}`}

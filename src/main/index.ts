@@ -2,9 +2,15 @@ import { app, BrowserWindow, nativeImage } from 'electron'
 import Store from 'electron-store'
 import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
-import { setupAutoUpdater, checkForUpdates } from './autoUpdater'
+import { setupAutoUpdater, startPolling } from './autoUpdater'
 import { initDatabase, closeDatabase } from '../database/client'
-import { registerSessionIPC, registerWindowIPC, registerConfigIPC, registerAppIPC } from './ipc'
+import {
+  registerSessionIPC,
+  registerWindowIPC,
+  registerConfigIPC,
+  registerAppIPC,
+  registerUpdateIPC
+} from './ipc'
 import type { AppConfig } from '../shared/types'
 
 export interface StoreSchema {
@@ -113,12 +119,12 @@ if (!gotTheLock) {
     registerWindowIPC(() => mainWindow, store)
     registerConfigIPC(store)
     registerAppIPC()
+    registerUpdateIPC()
     createWindow()
 
     if (!is.dev) {
-      setupAutoUpdater()
-      checkForUpdates()
-      setInterval(checkForUpdates, 4 * 60 * 60 * 1000)
+      setupAutoUpdater(mainWindow)
+      startPolling()
     }
 
     app.on('activate', () => {

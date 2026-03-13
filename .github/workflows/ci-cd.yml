@@ -75,6 +75,84 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+  generate-metadata:
+    needs: release
+    if: needs.release.outputs.release_created
+    runs-on: ubuntu-latest
+    outputs:
+      priority: ${{ steps.detect.outputs.priority }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect update priority
+        id: detect
+        run: |
+          VERSION="${{ needs.release.outputs.tag_name }}"
+
+          COMMITS=$(git log --pretty=format:"%s" HEAD~20..HEAD 2>/dev/null || echo "")
+
+          PRIORITY="normal"
+          MESSAGE="Bug fixes and improvements"
+
+          if echo "$COMMITS" | grep -qiE "(security|cve|vulnerability|xss|injection|auth|exploit)"; then
+            if echo "$COMMITS" | grep -qiE "(critical|urgent|breaking)"; then
+              PRIORITY="critical"
+              MESSAGE="Critical security update"
+            else
+              PRIORITY="security"
+              MESSAGE="Security update"
+            fi
+          elif echo "$COMMITS" | grep -qiE "(critical|urgent|breaking)"; then
+            PRIORITY="critical"
+            MESSAGE="Critical update"
+          fi
+
+          echo "priority=$PRIORITY" >> $GITHUB_OUTPUT
+
+      - name: Create update metadata
+        run: |
+          VERSION="${{ needs.release.outputs.tag_name }}"
+          PRIORITY="${{ steps.detect.outputs.priority }}"
+
+          case "$PRIORITY" in
+            critical)
+              MESSAGE="Critical security update. Restart required."
+              FORCE_RESTART="true"
+              ;;
+            security)
+              MESSAGE="Security update. Please restart to apply."
+              FORCE_RESTART="false"
+              ;;
+            *)
+              MESSAGE="Bug fixes and improvements"
+              FORCE_RESTART="false"
+              ;;
+          esac
+
+          cat > update-metadata.json << EOF
+          {
+            "version": "${VERSION#v}",
+            "priority": "$PRIORITY",
+            "message": "$MESSAGE",
+            "forceRestart": $FORCE_RESTART,
+            "releaseDate": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          EOF
+
+          echo "Generated metadata:"
+          cat update-metadata.json
+
+      - name: Upload metadata to release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ needs.release.outputs.tag_name }}
+          files: update-metadata.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   build-windows:
     needs: [test, release]
     if: needs.release.outputs.release_created

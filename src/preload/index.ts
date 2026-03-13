@@ -1,6 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import type { NewSession, Session, FullSessionStats } from '../database/schema'
 import type { AppConfig } from '../shared/types'
+import type { UpdatePriority } from '../shared/types'
 
 contextBridge.exposeInMainWorld('electronAPI', {
   setAlwaysOnTop: (isPinned: boolean) => ipcRenderer.invoke('set-always-on-top', isPinned),
@@ -24,5 +25,27 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
 
   openExternal: (url: string): Promise<boolean> => ipcRenderer.invoke('shell:open-external', url),
-  getAppVersion: (): Promise<string> => ipcRenderer.invoke('app:get-version')
+  getAppVersion: (): Promise<string> => ipcRenderer.invoke('app:get-version'),
+
+  update: {
+    check: (): Promise<boolean> => ipcRenderer.invoke('update:check'),
+    getStatus: (): Promise<{
+      priority: UpdatePriority
+      hasCriticalUpdate: boolean
+      criticalDownloaded: boolean
+    }> => ipcRenderer.invoke('update:get-status'),
+    restart: (): Promise<boolean> => ipcRenderer.invoke('update:restart'),
+    snooze: (): Promise<boolean> => ipcRenderer.invoke('update:snooze'),
+    onStatus: (callback: (status: UpdateStatus) => void) => {
+      ipcRenderer.on('update-status', (_event, status) => callback(status))
+    }
+  }
 })
+
+export interface UpdateStatus {
+  available: boolean
+  version?: string
+  priority?: UpdatePriority
+  message?: string
+  progress?: number
+}
