@@ -113,23 +113,25 @@ export function ConfigSection({
         onToggle={() => onUpdate({ confettiEnabled: !config.confettiEnabled })}
       />
 
-      <Button
-        variant="update"
-        onClick={handleCheckUpdate}
-        disabled={checking || isDownloading}
-        className={upToDate ? 'text-green-400/50' : ''}
-      >
-        {upToDate ? (
-          <Check size={12} strokeWidth={1.5} />
-        ) : (
-          <RefreshCw
-            size={12}
-            strokeWidth={1.5}
-            className={checking || isDownloading ? 'animate-spin' : ''}
-          />
-        )}
-        {getUpdateLabel()}
-      </Button>
+      <div className="flex justify-center items-center">
+        <Button
+          variant="update"
+          onClick={handleCheckUpdate}
+          disabled={checking || isDownloading}
+          className={upToDate ? 'text-green-400/50 w-fit' : 'w-fit'}
+        >
+          {upToDate ? (
+            <Check size={12} strokeWidth={1.5} />
+          ) : (
+            <RefreshCw
+              size={12}
+              strokeWidth={1.5}
+              className={checking || isDownloading ? 'animate-spin' : ''}
+            />
+          )}
+          {getUpdateLabel()}
+        </Button>
+      </div>
     </div>
   )
 }
