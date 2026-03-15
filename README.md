@@ -281,12 +281,35 @@ El diseño minimalista usa un sistema de opacidad sobre fondo oscuro:
 
 ## 🚀 Instalación
 
-### Prerrequisitos
+### Descargas
+
+Descarga la última versión desde [GitHub Releases](https://github.com/torrescereno/hollow/releases/latest).
+
+| Plataforma  | Arquitectura  | Formato            |
+| ----------- | ------------- | ------------------ |
+| **Windows** | x64           | `.msi`             |
+| **Linux**   | x64           | `.AppImage` `.deb` |
+| **macOS**   | Apple Silicon | `.dmg` `.zip`      |
+| **macOS**   | Intel         | `.dmg` `.zip`      |
+
+#### macOS: primera ejecución
+
+La app no está firmada con Apple Developer. Después de instalar, ejecuta en Terminal:
+
+```bash
+xattr -cr /Applications/Hollow.app
+```
+
+> **Nota:** Las actualizaciones automáticas no están disponibles en macOS (requiere firma de Apple Developer). Descarga manualmente las nuevas versiones desde [Releases](https://github.com/torrescereno/hollow/releases/latest).
+
+### Desarrollo
+
+#### Prerrequisitos
 
 - **Node.js** >= 18.x
 - **Bun** >= 1.0 (recomendado) o npm
 
-### Quick Start
+#### Quick Start
 
 ```bash
 # Clonar el repositorio

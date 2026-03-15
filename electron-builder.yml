@@ -25,6 +25,9 @@ win:
 mac:
   icon: build/icons/mac/icon.icns
   entitlementsInherit: build/entitlements.mac.plist
+  target:
+    - dmg
+    - zip
   extendInfo:
     - NSCameraUsageDescription: Application requests access to the device's camera.
     - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
@@ -32,7 +35,9 @@ mac:
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
   notarize: false
 dmg:
-  artifactName: ${name}-${version}.${ext}
+  artifactName: ${name}-${version}-${arch}.${ext}
+zip:
+  artifactName: ${name}-${version}-${arch}.${ext}
 linux:
   icon: build/icons/png
   target:
