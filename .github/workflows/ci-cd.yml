@@ -181,10 +181,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  build-macos-arm64:
+  build-macos:
     needs: [test, release]
     if: needs.release.outputs.release_created
     runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [arm64, x64]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -200,40 +204,12 @@ jobs:
       - name: Generate icons
         run: bun run generate:icons
 
-      - name: Build macOS (arm64)
+      - name: Build macOS (${{ matrix.arch }})
         run: |
           rm -rf resources/migrations
           cp -r src/database/migrations resources/migrations
           bun run build
-          bunx electron-builder --mac --publish always
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  build-macos-x64:
-    needs: [test, release]
-    if: needs.release.outputs.release_created
-    runs-on: macos-15-intel
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - name: Install dependencies
-        run: bun install
-
-      - name: Generate icons
-        run: bun run generate:icons
-
-      - name: Build macOS (x64)
-        run: |
-          rm -rf resources/migrations
-          cp -r src/database/migrations resources/migrations
-          bun run build
-          bunx electron-builder --mac --publish always
+          bunx electron-builder --mac --${{ matrix.arch }} --publish always
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
