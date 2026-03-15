@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.4.2](https://github.com/torrescereno/hollow/compare/v3.4.1...v3.4.2) (2026-03-15)
+
+
+### Bug Fixes
+
+* update flow ([84c40d9](https://github.com/torrescereno/hollow/commit/84c40d9c0ad335ed5d78ed847c09c96c98966bab))
+
 ## [3.4.1](https://github.com/torrescereno/hollow/compare/v3.4.0...v3.4.1) (2026-03-15)
 
 
