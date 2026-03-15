@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.1](https://github.com/torrescereno/hollow/compare/v3.5.0...v3.5.1) (2026-03-15)
+
+
+### Bug Fixes
+
+* release build macos ([25c249a](https://github.com/torrescereno/hollow/commit/25c249a34e52b7b84eb4e65ee4aae04484134cee))
+
 ## [3.5.0](https://github.com/torrescereno/hollow/compare/v3.4.2...v3.5.0) (2026-03-15)
 
 
