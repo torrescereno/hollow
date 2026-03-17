@@ -30,7 +30,7 @@ export function Controls({
   const isRest = timerPhase === 'rest'
 
   return (
-    <div className="app-no-drag flex items-center mt-auto">
+    <div className="app-no-drag relative z-10 flex items-center mt-auto">
       <motion.div
         initial={false}
         animate={
