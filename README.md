@@ -3,10 +3,10 @@
 
   <h1>Hollow</h1>
 
-  <p><strong>Un temporizador Pomodoro minimalista para escritorio</strong></p>
+  <p><strong>A minimalist Pomodoro timer for desktop</strong></p>
 
   <p>
-    <em>Enfócate en lo importante. El tiempo fluye.</em>
+    <em>Focus on what matters. Time flows.</em>
   </p>
 
   <p>
@@ -28,24 +28,24 @@
   </p>
 
   <p>
-    <a href="#features">Características</a> •
+    <a href="#features">Features</a> •
     <a href="#tech-stack">Tech Stack</a> •
-    <a href="#architecture">Arquitectura</a> •
-    <a href="#instalación">Instalación</a>
+    <a href="#architecture">Architecture</a> •
+    <a href="#installation">Installation</a>
   </p>
 </div>
 
 ---
 
-## ✨ Características
+## ✨ Features
 
-| ⏱️ **Timer Inteligente**                      | 📊 **Estadísticas Detalladas**                                |
-| :-------------------------------------------- | :------------------------------------------------------------ |
-| Intervalos personalizables de focus y break   | Historial completo de sesiones y rachas                       |
-| **⚙️ Configuración Flexible**                 | **🔄 Actualizaciones Automáticas**                            |
-| Duración, sonidos y comportamiento de ventana | Updates inteligentes con prioridad crítica, security y normal |
-| **💾 Storage Local**                          |                                                               |
-| Datos privados, sin conexión a internet       |                                                               |
+| ⏱️ **Smart Timer**                     | 📊 **Detailed Statistics**                                 |
+| :------------------------------------- | :--------------------------------------------------------- |
+| Customizable focus and break intervals | Complete session history and streaks                       |
+| **⚙️ Flexible Configuration**          | **🔄 Automatic Updates**                                   |
+| Duration, sounds, and window behavior  | Smart updates with critical, security, and normal priority |
+| **💾 Local Storage**                   |                                                            |
+| Private data, no internet connection   |                                                            |
 
 ---
 
@@ -53,36 +53,36 @@
 
 ### Frontend
 
-| Tecnología          | Propósito                   |
-| ------------------- | --------------------------- |
-| **React 19**        | Framework UI                |
-| **TypeScript**      | Tipado estático             |
-| **Tailwind CSS v4** | Estilos                     |
-| **shadcn/ui**       | Componentes UI primitivos   |
-| **Radix UI**        | Primitivas de accesibilidad |
-| **Motion**          | Animaciones                 |
-| **Lucide React**    | Iconos                      |
+| Technology          | Purpose                  |
+| ------------------- | ------------------------ |
+| **React 19**        | UI Framework             |
+| **TypeScript**      | Static typing            |
+| **Tailwind CSS v4** | Styles                   |
+| **shadcn/ui**       | Primitive UI components  |
+| **Radix UI**        | Accessibility primitives |
+| **Motion**          | Animations               |
+| **Lucide React**    | Icons                    |
 
 ### Desktop
 
-| Tecnología         | Propósito                     |
-| ------------------ | ----------------------------- |
-| **Electron 33**    | Framework de escritorio       |
-| **Electron Store** | Persistencia de configuración |
+| Technology         | Purpose                   |
+| ------------------ | ------------------------- |
+| **Electron 33**    | Desktop framework         |
+| **Electron Store** | Configuration persistence |
 
 ### Build
 
-| Herramienta          | Propósito       |
+| Tool                 | Purpose         |
 | -------------------- | --------------- |
 | **Vite**             | Build tool      |
 | **Bun**              | Package manager |
-| **Electron Builder** | Empaquetado     |
+| **Electron Builder** | Packaging       |
 
 ---
 
-## 🏗️ Arquitectura
+## 🏗️ Architecture
 
-Hollow sigue una **arquitectura en capas** con separación clara de responsabilidades:
+Hollow follows a **layered architecture** with clear separation of concerns:
 
 ### System Overview
 
@@ -206,67 +206,61 @@ sequenceDiagram
         Main->>Store: Save pendingUpdate
         Main->>App: update-status (normal)
         App->>User: Show banner notification
-        User->>App: Restart now or Skip
     else Security Update
         GitHub-->>Main: Update available (security)
         Main->>Main: Auto-download in background
         Main->>Store: Save pendingUpdate
         Main->>App: update-status (security)
         App->>User: Show orange banner
-        User->>App: Restart now or Later
     else Critical Update
         GitHub-->>Main: Update available (critical)
         Main->>Main: Auto-download in background
         Main->>Store: Save pendingUpdate
         Main->>App: update-status (critical)
         App->>User: Show blocking modal
-        User->>App: Restart now or snooze 5min
-        App->>Main: forceRestart() or snooze()
     end
-
-    Note over User,Store: Skip = app closes normally, no install.<br/>Next launch re-shows notification.
 ```
 
 ### Update Priority Levels
 
-| Prioridad    | Intervalo | Comportamiento                                                                  |
-| ------------ | --------- | ------------------------------------------------------------------------------- |
-| **Normal**   | 60 min    | Descarga silenciosa, notificar. Skip omite realmente, re-muestra al reiniciar   |
-| **Security** | 15 min    | Descarga silenciosa, notificar con acción recomendada. Persiste entre reinicios |
-| **Critical** | 5 min     | Descarga silenciosa, modal bloqueante con countdown y snooze                    |
+| Priority     | Interval | Behavior                                                                  |
+| ------------ | -------- | ------------------------------------------------------------------------- |
+| **Normal**   | 60 min   | Silent download, notify. Skip actually skips, re-shows on restart         |
+| **Security** | 15 min   | Silent download, notify with recommended action. Persists across restarts |
+| **Critical** | 5 min    | Silent download, blocking modal with countdown and snooze                 |
 
-### Resumen de Capas
+### Layer Summary
 
-| Capa           | Responsabilidad                    | Tecnologías                       |
-| -------------- | ---------------------------------- | --------------------------------- |
-| **Views**      | UI y presentación                  | React, TypeScript                 |
-| **Components** | Componentes de la aplicación       | React, shadcn/ui                  |
-| **Primitives** | Primitivas UI reutilizables        | shadcn/ui, Radix UI, Tailwind CSS |
-| **State**      | Lógica de negocio y flujo de datos | Custom Hooks                      |
-| **Services**   | Integraciones externas             | Electron API                      |
-| **Data**       | Persistencia y esquemas            | Electron Store, Zod               |
-| **Database**   | Almacenamiento estructurado        | Better-SQLite3, Drizzle ORM       |
+| Layer          | Responsibility               | Technologies                      |
+| -------------- | ---------------------------- | --------------------------------- |
+| **Views**      | UI and presentation          | React, TypeScript                 |
+| **Components** | Application components       | React, shadcn/ui                  |
+| **Primitives** | Reusable UI primitives       | shadcn/ui, Radix UI, Tailwind CSS |
+| **State**      | Business logic and data flow | Custom Hooks                      |
+| **Services**   | External integrations        | Electron API                      |
+| **Data**       | Persistence and schemas      | Electron Store, Zod               |
+| **Database**   | Structured storage           | Better-SQLite3, Drizzle ORM       |
 
 ---
 
 ## 🎨 Design System
 
-Hollow utiliza **shadcn/ui** como base para los componentes UI, construido sobre **Radix UI** para accesibilidad y **Tailwind CSS v4** para estilos.
+Hollow uses **shadcn/ui** as the base for UI components, built on **Radix UI** for accessibility and **Tailwind CSS v4** for styling.
 
-### Componentes UI
+### UI Components
 
-| Componente | Basado en        | Descripción                                          |
-| ---------- | ---------------- | ---------------------------------------------------- |
-| **Button** | shadcn/ui Button | 6 variantes: icon, play, back, clear, export, update |
-| **Switch** | Radix UI Switch  | Toggle de configuración                              |
-| **Slider** | Radix UI Slider  | Control deslizante para duraciones                   |
-| **Tabs**   | Radix UI Tabs    | Navegación entre secciones                           |
-| **Card**   | shadcn/ui Card   | Contenedor de estadísticas                           |
-| **Alert**  | shadcn/ui Alert  | Notificaciones de advertencia                        |
+| Component  | Based on         | Description                                         |
+| ---------- | ---------------- | --------------------------------------------------- |
+| **Button** | shadcn/ui Button | 6 variants: icon, play, back, clear, export, update |
+| **Switch** | Radix UI Switch  | Configuration toggle                                |
+| **Slider** | Radix UI Slider  | Slider control for durations                        |
+| **Tabs**   | Radix UI Tabs    | Section navigation                                  |
+| **Card**   | shadcn/ui Card   | Statistics container                                |
+| **Alert**  | shadcn/ui Alert  | Warning notifications                               |
 
-### Tema Oscuro
+### Dark Theme
 
-El diseño minimalista usa un sistema de opacidad sobre fondo oscuro:
+The minimalist design uses an opacity system on a dark background:
 
 ```css
 --background: #0f0f0f;
@@ -293,65 +287,65 @@ El diseño minimalista usa un sistema de opacidad sobre fondo oscuro:
 
 ---
 
-## 🚀 Instalación
+## 🚀 Installation
 
-### Descargas
+### Downloads
 
-Descarga la última versión desde [GitHub Releases](https://github.com/torrescereno/hollow/releases/latest).
+Download the latest version from [GitHub Releases](https://github.com/torrescereno/hollow/releases/latest).
 
-| Plataforma  | Arquitectura  | Formato            |
+| Platform    | Architecture  | Format             |
 | ----------- | ------------- | ------------------ |
 | **Windows** | x64           | `.msi`             |
 | **Linux**   | x64           | `.AppImage` `.deb` |
 | **macOS**   | Apple Silicon | `.dmg` `.zip`      |
 | **macOS**   | Intel         | `.dmg` `.zip`      |
 
-#### macOS: primera ejecución
+#### macOS: First Run
 
-La app no está firmada con Apple Developer. Después de instalar, ejecuta en Terminal:
+The app is not signed with Apple Developer. After installing, run in Terminal:
 
 ```bash
 xattr -cr /Applications/Hollow.app
 ```
 
-> **Nota:** Las actualizaciones automáticas no están disponibles en macOS (requiere firma de Apple Developer). Descarga manualmente las nuevas versiones desde [Releases](https://github.com/torrescereno/hollow/releases/latest).
+> **Note:** Automatic updates are not available on macOS (requires Apple Developer signature). Download new versions manually from [Releases](https://github.com/torrescereno/hollow/releases/latest).
 
-### Desarrollo
+### Development
 
-#### Prerrequisitos
+#### Prerequisites
 
 - **Node.js** >= 18.x
-- **Bun** >= 1.0 (recomendado) o npm
+- **Bun** >= 1.0 (recommended) or npm
 
 #### Quick Start
 
 ```bash
-# Clonar el repositorio
+# Clone the repository
 git clone https://github.com/torrescereno/hollow.git
 cd hollow
 
-# Instalar dependencias
+# Install dependencies
 bun install
 
-# Ejecutar en modo desarrollo
+# Run in development mode
 bun run dev
 ```
 
 <details>
-<summary><b>📖 Scripts de Desarrollo</b></summary>
+<summary><b>📖 Development Scripts</b></summary>
 
-| Comando               | Descripción                             |
-| --------------------- | --------------------------------------- |
-| `bun run dev`         | Servidor de desarrollo con hot reload   |
-| `bun run build`       | Build para producción (auto-detecta OS) |
-| `bun run build:win`   | Build para Windows (.exe)               |
-| `bun run build:mac`   | Build para macOS (.dmg)                 |
-| `bun run build:linux` | Build para Linux (.AppImage, .deb)      |
+| Command               | Description                        |
+| --------------------- | ---------------------------------- |
+| `bun run dev`         | Development server with hot reload |
+| `bun run build`       | Production build (auto-detects OS) |
+| `bun run build:win`   | Build for Windows (.exe)           |
+| `bun run build:mac`   | Build for macOS (.dmg)             |
+| `bun run build:linux` | Build for Linux (.AppImage, .deb)  |
 
 </details>
 
 ---
 
 <div align="center">
-  <sub>Hecho con ❤️ por <a href="https://github.com/torrescereno">torrescereno</a></sub>
+  <sub>Made with ❤️ by <a href="https://github.com/torrescereno">torrescereno</a></sub>
 </div>
