@@ -10,6 +10,7 @@ export const statsService = {
     const longestSession = sessionRepository.getLongestSession()
     const avgPerDay = sessionRepository.getAvgPerDay()
     const weeklyActivity = sessionRepository.getWeeklyActivity()
+    const dailyActivity = sessionRepository.getDailyActivity(365)
 
     return {
       today: { sessions: today.count, minutes: today.totalMinutes },
@@ -20,7 +21,8 @@ export const statsService = {
       avgPerDay,
       longestSession,
       completionRate,
-      weeklyActivity
+      weeklyActivity,
+      dailyActivity
     }
   },
 

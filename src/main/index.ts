@@ -9,7 +9,8 @@ import {
   registerWindowIPC,
   registerConfigIPC,
   registerAppIPC,
-  registerUpdateIPC
+  registerUpdateIPC,
+  registerNotificationIPC
 } from './ipc'
 import type { AppConfig, PendingUpdate } from '../shared/types'
 
@@ -123,6 +124,7 @@ if (!gotTheLock) {
     registerConfigIPC(store)
     registerAppIPC()
     registerUpdateIPC()
+    registerNotificationIPC()
     createWindow()
 
     if (!is.dev) {

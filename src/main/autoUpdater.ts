@@ -9,6 +9,7 @@ const RELEASE_URL = 'https://github.com/torrescereno/hollow/releases/latest'
 const METADATA_URL =
   'https://github.com/torrescereno/hollow/releases/latest/download/update-metadata.json'
 
+const isMacOS = process.platform === 'darwin'
 const canAutoUpdate = process.platform !== 'linux' || !!process.env.APPIMAGE
 
 const POLL_INTERVALS = {
@@ -82,6 +83,11 @@ export function setupAutoUpdater(mainWindow: BrowserWindow, store: Store<StoreSc
 export function checkPendingUpdate(): void {
   if (is.dev || !storeRef) return
 
+  if (isMacOS) {
+    storeRef.delete('pendingUpdate')
+    return
+  }
+
   const pending = storeRef.get('pendingUpdate')
   if (!pending) return
 
@@ -114,10 +120,16 @@ async function handleUpdateAvailable(version: string): Promise<void> {
     priority,
     message: metadata?.message,
     progress: 0,
-    downloaded: false
+    downloaded: false,
+    manualDownload: isMacOS
   }
 
   sendUpdateStatus(lastStatus)
+
+  if (isMacOS) {
+    showMacOSManualUpdateDialog(version, priority)
+    return
+  }
 
   autoUpdater.downloadUpdate()
 
@@ -144,6 +156,35 @@ function showLinuxManualUpdateDialog(version: string): void {
       title: 'Actualización disponible',
       message: `Una nueva versión (${version}) esta disponible. Por favor descargue desde el repositorio de GitHub.`,
       buttons: ['Descargar', 'En otro momento']
+    })
+    .then((result) => {
+      if (result.response === 0) {
+        shell.openExternal(RELEASE_URL)
+      }
+    })
+}
+
+function showMacOSManualUpdateDialog(version: string, priority: UpdatePriority): void {
+  const priorityLabels = {
+    normal: '',
+    security: ' (Security)',
+    critical: ' (Critical)'
+  }
+
+  const priorityMessages = {
+    normal: '',
+    security: ' Esta versión incluye correcciones de seguridad importantes.',
+    critical: ' Esta versión incluye correcciones críticas que deben instalarse.'
+  }
+
+  dialog
+    .showMessageBox({
+      type: priority === 'critical' ? 'warning' : 'info',
+      title: `Actualización disponible${priorityLabels[priority]}`,
+      message: `Una nueva versión (${version}) está disponible.${priorityMessages[priority]}`,
+      detail:
+        'Las actualizaciones automáticas no están disponibles en macOS. Puedes descargar la nueva versión desde GitHub.',
+      buttons: ['Descargar ahora', 'Recordar después']
     })
     .then((result) => {
       if (result.response === 0) {

@@ -7,7 +7,8 @@ import {
   useStats,
   useTimer,
   useViewTransition,
-  useUpdate
+  useUpdate,
+  useAudioActivation
 } from './hooks'
 import type { MenuTab } from './schemas'
 import { MenuView, TimerView } from './sections'
@@ -15,6 +16,7 @@ import { TIMER_SIZE, MENU_SIZE } from './constants'
 import { UpdateNotification } from './components'
 
 export default function App(): React.JSX.Element {
+  useAudioActivation()
   const [menuTab, setMenuTab] = useState<MenuTab>('stats')
 
   const { view, switchView, transitionPhase, onExitComplete } = useViewTransition()

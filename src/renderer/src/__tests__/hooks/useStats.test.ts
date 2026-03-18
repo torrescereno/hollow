@@ -28,7 +28,8 @@ describe('useStats', () => {
       { day: 'Vi', active: true, isToday: true },
       { day: 'Sa', active: false, isToday: false },
       { day: 'Do', active: false, isToday: false }
-    ]
+    ],
+    dailyActivity: []
   }
 
   beforeEach(() => {
@@ -105,7 +106,8 @@ describe('useStats', () => {
         { day: 'Vi', active: false, isToday: true },
         { day: 'Sa', active: false, isToday: false },
         { day: 'Do', active: false, isToday: false }
-      ]
+      ],
+      dailyActivity: []
     }
 
     vi.mocked(sessionsService.getFullStats).mockResolvedValue(emptyStats)

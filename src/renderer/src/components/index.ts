@@ -1,3 +1,4 @@
+export { ActivityHeatmap } from './ActivityHeatmap'
 export { Timer } from './Timer'
 export { Controls } from './Controls'
 export { StatCard } from './StatCard'

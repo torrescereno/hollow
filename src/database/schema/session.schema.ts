@@ -19,6 +19,12 @@ export interface SessionStats {
   total: { count: number; totalMinutes: number }
 }
 
+export interface DailyActivity {
+  date: string
+  sessions: number
+  totalMinutes: number
+}
+
 export interface FullSessionStats extends SessionStats {
   streak: number
   bestStreak: number
@@ -26,4 +32,5 @@ export interface FullSessionStats extends SessionStats {
   longestSession: number
   completionRate: number
   weeklyActivity: { day: string; active: boolean; isToday: boolean }[]
+  dailyActivity: DailyActivity[]
 }

@@ -17,7 +17,8 @@ export function useStats(): UseStatsReturn {
     avgPerDay: 0,
     longestSession: 0,
     completionRate: 0,
-    weeklyActivity: []
+    weeklyActivity: [],
+    dailyActivity: []
   })
 
   const loadStats = useCallback(async () => {

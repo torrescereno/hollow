@@ -8,6 +8,12 @@ export interface SessionRecord {
   createdAt?: Date | number | null
 }
 
+export interface DailyActivity {
+  date: string
+  sessions: number
+  totalMinutes: number
+}
+
 export interface FullSessionStats {
   today: { sessions: number; minutes: number }
   week: { sessions: number; minutes: number }
@@ -18,4 +24,5 @@ export interface FullSessionStats {
   longestSession: number
   completionRate: number
   weeklyActivity: { day: string; active: boolean; isToday: boolean }[]
+  dailyActivity: DailyActivity[]
 }

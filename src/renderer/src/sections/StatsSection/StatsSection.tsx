@@ -1,6 +1,6 @@
 import { Download, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
-import { Button, StatCard } from '../../components'
+import { ActivityHeatmap, Button, StatCard } from '../../components'
 import type { Stats } from '../../schemas'
 
 interface StatsSectionProps {
@@ -66,6 +66,8 @@ export function StatsSection({
           ))}
         </div>
       </div>
+
+      <ActivityHeatmap dailyActivity={stats.dailyActivity} />
 
       <div className="grid grid-cols-3 gap-3">
         <StatCard

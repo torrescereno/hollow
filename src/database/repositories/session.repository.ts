@@ -171,6 +171,44 @@ export const sessionRepository = {
     return result
   },
 
+  getDailyActivity: (
+    daysBack: number = 365
+  ): { date: string; sessions: number; totalMinutes: number }[] => {
+    const db = getDb()
+    const startDate = new Date()
+    startDate.setDate(startDate.getDate() - daysBack)
+    startDate.setHours(0, 0, 0, 0)
+
+    const rows = db
+      .select({
+        startTime: sessions.startTime,
+        focusMinutes: sessions.focusMinutes
+      })
+      .from(sessions)
+      .where(gte(sessions.startTime, startDate))
+      .all()
+
+    const dayMap = new Map<string, { sessions: number; totalMinutes: number }>()
+
+    for (const row of rows) {
+      const d = row.startTime instanceof Date ? row.startTime : new Date((row.startTime as number) * 1000)
+      const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+      const existing = dayMap.get(dateStr)
+      if (existing) {
+        existing.sessions++
+        existing.totalMinutes += row.focusMinutes
+      } else {
+        dayMap.set(dateStr, { sessions: 1, totalMinutes: row.focusMinutes })
+      }
+    }
+
+    return Array.from(dayMap.entries()).map(([date, data]) => ({
+      date,
+      sessions: data.sessions,
+      totalMinutes: data.totalMinutes
+    }))
+  },
+
   clear: (): void => {
     const db = getDb()
     db.delete(sessions).run()

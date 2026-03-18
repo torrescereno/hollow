@@ -9,6 +9,8 @@ interface UpdateNotificationProps {
   onDismiss: () => void
 }
 
+const RELEASE_URL = 'https://github.com/torrescereno/hollow/releases/latest'
+
 export function UpdateNotification({
   updateInfo,
   onRestart,
@@ -39,11 +41,17 @@ export function UpdateNotification({
     return () => clearInterval(timer)
   }, [updateInfo, onRestart])
 
+  const handleDownload = (): void => {
+    window.electronAPI?.openExternal(RELEASE_URL)
+    onDismiss()
+  }
+
   if (!updateInfo?.available) return null
 
   const isCritical = updateInfo.priority === 'critical'
   const isSecurity = updateInfo.priority === 'security'
   const isDownloaded = updateInfo.downloaded === true
+  const isManualDownload = updateInfo.manualDownload === true
 
   if (isCritical) {
     const minutes = Math.floor(countdown / 60)
@@ -68,29 +76,54 @@ export function UpdateNotification({
               />
             </svg>
             <span className="flex-1 text-xs font-medium">Critical update</span>
-            <span className="rounded-full bg-red-950/60 px-2 py-0.5 font-mono text-[10px] font-bold text-red-300">
-              {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
-            </span>
+            {!isManualDownload && (
+              <span className="rounded-full bg-red-950/60 px-2 py-0.5 font-mono text-[10px] font-bold text-red-300">
+                {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
+              </span>
+            )}
           </div>
 
           <div className="flex gap-1.5">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onSnooze}
-              className="flex-1 rounded-full bg-white/10 text-white/80 hover:bg-white/20 text-[10px]"
-            >
-              5 min
-            </Button>
-            <Button
-              variant="default"
-              size="sm"
-              onClick={onRestart}
-              disabled={!isDownloaded}
-              className="flex-1 rounded-full bg-white text-red-900 hover:bg-white/90 text-[10px]"
-            >
-              {isDownloaded ? 'Reiniciar' : 'Descargando...'}
-            </Button>
+            {isManualDownload ? (
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onDismiss}
+                  className="flex-1 rounded-full bg-white/10 text-white/80 hover:bg-white/20 text-[10px]"
+                >
+                  Despues
+                </Button>
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={handleDownload}
+                  className="flex-1 rounded-full bg-white text-red-900 hover:bg-white/90 text-[10px]"
+                >
+                  Descargar
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onSnooze}
+                  className="flex-1 rounded-full bg-white/10 text-white/80 hover:bg-white/20 text-[10px]"
+                >
+                  5 min
+                </Button>
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={onRestart}
+                  disabled={!isDownloaded}
+                  className="flex-1 rounded-full bg-white text-red-900 hover:bg-white/90 text-[10px]"
+                >
+                  {isDownloaded ? 'Reiniciar' : 'Descargando...'}
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -129,15 +162,26 @@ export function UpdateNotification({
           >
             Despues
           </Button>
-          {isDownloaded && (
+          {isManualDownload ? (
             <Button
               variant="ghost"
               size="sm"
-              onClick={onRestart}
+              onClick={handleDownload}
               className="rounded-full bg-white/20 text-white hover:bg-white/30 text-[10px]"
             >
-              Reiniciar
+              Descargar
             </Button>
+          ) : (
+            isDownloaded && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onRestart}
+                className="rounded-full bg-white/20 text-white hover:bg-white/30 text-[10px]"
+              >
+                Reiniciar
+              </Button>
+            )
           )}
         </div>
       </div>
@@ -163,34 +207,11 @@ export function UpdateNotification({
         </svg>
 
         <span className="flex-1 text-foreground/80">
-          Actualización {isDownloaded ? ' lista' : ' disponible'}
+          Actualización disponible
           {updateInfo.version && (
             <span className="text-muted-foreground"> v{updateInfo.version}</span>
           )}
         </span>
-
-        {!isDownloaded && updateInfo.progress !== undefined && updateInfo.progress < 100 ? (
-          <div className="flex items-center gap-1.5">
-            <div className="h-1 w-12 overflow-hidden rounded-full bg-muted">
-              <div
-                className="h-full bg-foreground/60 transition-all"
-                style={{ width: `${updateInfo.progress}%` }}
-              />
-            </div>
-            <span className="text-[10px] text-muted-foreground">{updateInfo.progress}%</span>
-          </div>
-        ) : null}
-
-        {isDownloaded ? (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onRestart}
-            className="bg-white/20 text-white hover:bg-white/30 text-[10px] rounded-full"
-          >
-            Reiniciar
-          </Button>
-        ) : null}
 
         <Button
           variant="ghost"
@@ -200,6 +221,27 @@ export function UpdateNotification({
         >
           Omitir
         </Button>
+        {isManualDownload ? (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleDownload}
+            className="bg-white/20 text-white hover:bg-white/30 text-[10px] rounded-full"
+          >
+            Descargar
+          </Button>
+        ) : (
+          isDownloaded && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onRestart}
+              className="bg-white/20 text-white hover:bg-white/30 text-[10px] rounded-full"
+            >
+              Reiniciar
+            </Button>
+          )
+        )}
       </div>
     </div>
   )

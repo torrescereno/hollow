@@ -20,6 +20,9 @@ export interface ElectronAPI {
     clear: () => Promise<void>
     exportCsv: () => Promise<boolean>
   }
+  notification: {
+    show: (title: string, body: string) => Promise<boolean>
+  }
   openExternal: (url: string) => Promise<boolean>
   getAppVersion: () => Promise<string>
   update: {

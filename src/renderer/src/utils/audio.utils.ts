@@ -1,4 +1,9 @@
 import { SOUND_OPTIONS } from '../schemas'
+import {
+  getAudioContext,
+  isAudioContextActivated,
+  getPreloadedSound
+} from './audioActivation.utils'
 
 function getAudioPath(filename: string): string {
   return `./sounds/${filename}`
@@ -11,6 +16,14 @@ export async function playSoundById(soundId: string): Promise<HTMLAudioElement> 
     throw new Error(`Sound not found: ${soundId}`)
   }
 
+  const preloadedAudio = getPreloadedSound(sound.filename)
+  if (preloadedAudio) {
+    preloadedAudio.currentTime = 0
+    preloadedAudio.volume = 0.5
+    await preloadedAudio.play()
+    return preloadedAudio
+  }
+
   const audioPath = getAudioPath(sound.filename)
   const audio = new Audio(audioPath)
   audio.volume = 0.5
@@ -20,17 +33,29 @@ export async function playSoundById(soundId: string): Promise<HTMLAudioElement> 
   return audio
 }
 
-export function playCompletionSound(soundId?: string): void {
+export async function playCompletionSound(soundId?: string): Promise<void> {
   const id = soundId || 'bell'
 
-  playSoundById(id).catch(() => {
-    playFallbackSound()
-  })
+  try {
+    await playSoundById(id)
+  } catch {
+    try {
+      await playFallbackSound()
+    } catch {
+      await showSystemNotification()
+    }
+  }
 }
 
-function playFallbackSound(): void {
+async function playFallbackSound(): Promise<void> {
   try {
-    const ctx = new AudioContext()
+    const existingContext = getAudioContext()
+    const ctx = isAudioContextActivated() && existingContext ? existingContext : new AudioContext()
+
+    if (ctx.state === 'suspended') {
+      await ctx.resume()
+    }
+
     const osc = ctx.createOscillator()
     const gain = ctx.createGain()
     osc.connect(gain)
@@ -45,7 +70,19 @@ function playFallbackSound(): void {
 
     osc.start(ctx.currentTime)
     osc.stop(ctx.currentTime + 0.6)
-  } catch {
-    // Audio not available
+  } catch (error) {
+    console.warn('[Audio] Fallback sound failed:', error)
+    throw error
+  }
+}
+
+async function showSystemNotification(): Promise<void> {
+  try {
+    await window.electronAPI?.notification.show(
+      'Hollow - Timer completado',
+      'Tu sesión de Pomodoro ha terminado.'
+    )
+  } catch (error) {
+    console.warn('[Notification] System notification failed:', error)
   }
 }

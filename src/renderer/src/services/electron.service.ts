@@ -57,7 +57,8 @@ class ElectronService {
         avgPerDay: 0,
         longestSession: 0,
         completionRate: 0,
-        weeklyActivity: []
+        weeklyActivity: [],
+        dailyActivity: []
       }
     )
   }

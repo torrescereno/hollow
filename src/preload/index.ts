@@ -23,6 +23,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
     exportCsv: (): Promise<boolean> => ipcRenderer.invoke('session:export-csv')
   },
 
+  notification: {
+    show: (title: string, body: string): Promise<boolean> =>
+      ipcRenderer.invoke('notification:show', title, body)
+  },
+
   openExternal: (url: string): Promise<boolean> => ipcRenderer.invoke('shell:open-external', url),
   getAppVersion: (): Promise<string> => ipcRenderer.invoke('app:get-version'),
 
