@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import type { UpdateInfo } from '../../schemas/electron.schema'
+import { useI18n } from '../../providers'
 
 interface UpdateNotificationProps {
   updateInfo: UpdateInfo | null
@@ -17,6 +18,7 @@ export function UpdateNotification({
   onSnooze,
   onDismiss
 }: UpdateNotificationProps): React.JSX.Element | null {
+  const { t } = useI18n()
   const [countdown, setCountdown] = useState(300)
 
   useEffect(() => {
@@ -92,7 +94,7 @@ export function UpdateNotification({
                   onClick={onDismiss}
                   className="flex-1 rounded-full bg-white/10 text-white/80 hover:bg-white/20 text-[10px]"
                 >
-                  Despues
+                  {t.update.later}
                 </Button>
                 <Button
                   variant="default"
@@ -100,7 +102,7 @@ export function UpdateNotification({
                   onClick={handleDownload}
                   className="flex-1 rounded-full bg-white text-red-900 hover:bg-white/90 text-[10px]"
                 >
-                  Descargar
+                  {t.update.download}
                 </Button>
               </>
             ) : (
@@ -111,7 +113,7 @@ export function UpdateNotification({
                   onClick={onSnooze}
                   className="flex-1 rounded-full bg-white/10 text-white/80 hover:bg-white/20 text-[10px]"
                 >
-                  5 min
+                  {t.update.snooze}
                 </Button>
                 <Button
                   variant="default"
@@ -120,7 +122,7 @@ export function UpdateNotification({
                   disabled={!isDownloaded}
                   className="flex-1 rounded-full bg-white text-red-900 hover:bg-white/90 text-[10px]"
                 >
-                  {isDownloaded ? 'Reiniciar' : 'Descargando...'}
+                  {isDownloaded ? t.update.restart : t.update.downloading}
                 </Button>
               </>
             )}
@@ -160,7 +162,7 @@ export function UpdateNotification({
             onClick={onDismiss}
             className="rounded-full text-white/60 hover:text-white/80 text-[10px]"
           >
-            Despues
+            {t.update.later}
           </Button>
           {isManualDownload ? (
             <Button
@@ -169,7 +171,7 @@ export function UpdateNotification({
               onClick={handleDownload}
               className="rounded-full bg-white/20 text-white hover:bg-white/30 text-[10px]"
             >
-              Descargar
+              {t.update.download}
             </Button>
           ) : (
             isDownloaded && (
@@ -179,7 +181,7 @@ export function UpdateNotification({
                 onClick={onRestart}
                 className="rounded-full bg-white/20 text-white hover:bg-white/30 text-[10px]"
               >
-                Reiniciar
+                {t.update.restart}
               </Button>
             )
           )}
@@ -207,7 +209,7 @@ export function UpdateNotification({
         </svg>
 
         <span className="flex-1 text-foreground/80">
-          Actualización disponible
+          {t.update.available}
           {updateInfo.version && (
             <span className="text-muted-foreground"> v{updateInfo.version}</span>
           )}
@@ -219,7 +221,7 @@ export function UpdateNotification({
           onClick={onDismiss}
           className="text-muted-foreground hover:text-foreground/60 text-[10px] rounded-full"
         >
-          Omitir
+          {t.update.skip}
         </Button>
         {isManualDownload ? (
           <Button
@@ -228,7 +230,7 @@ export function UpdateNotification({
             onClick={handleDownload}
             className="bg-white/20 text-white hover:bg-white/30 text-[10px] rounded-full"
           >
-            Descargar
+            {t.update.download}
           </Button>
         ) : (
           isDownloaded && (
@@ -238,7 +240,7 @@ export function UpdateNotification({
               onClick={onRestart}
               className="bg-white/20 text-white hover:bg-white/30 text-[10px] rounded-full"
             >
-              Reiniciar
+              {t.update.restart}
             </Button>
           )
         )}

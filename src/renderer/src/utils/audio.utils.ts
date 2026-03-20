@@ -4,6 +4,8 @@ import {
   isAudioContextActivated,
   getPreloadedSound
 } from './audioActivation.utils'
+import type { Locale } from '../../../shared/types'
+import { getTranslations } from '../../../shared/i18n'
 
 function getAudioPath(filename: string): string {
   return `./sounds/${filename}`
@@ -33,7 +35,7 @@ export async function playSoundById(soundId: string): Promise<HTMLAudioElement> 
   return audio
 }
 
-export async function playCompletionSound(soundId?: string): Promise<void> {
+export async function playCompletionSound(soundId?: string, locale?: Locale): Promise<void> {
   const id = soundId || 'bell'
 
   try {
@@ -42,7 +44,7 @@ export async function playCompletionSound(soundId?: string): Promise<void> {
     try {
       await playFallbackSound()
     } catch {
-      await showSystemNotification()
+      await showSystemNotification(locale)
     }
   }
 }
@@ -76,11 +78,13 @@ async function playFallbackSound(): Promise<void> {
   }
 }
 
-async function showSystemNotification(): Promise<void> {
+async function showSystemNotification(locale?: Locale): Promise<void> {
+  const t = getTranslations(locale ?? 'en')
+
   try {
     await window.electronAPI?.notification.show(
-      'Hollow - Timer completado',
-      'Tu sesión de Pomodoro ha terminado.'
+      t.notifications.timerTitle,
+      t.notifications.timerBody
     )
   } catch (error) {
     console.warn('[Notification] System notification failed:', error)

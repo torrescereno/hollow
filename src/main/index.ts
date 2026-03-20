@@ -13,6 +13,7 @@ import {
   registerNotificationIPC
 } from './ipc'
 import type { AppConfig, PendingUpdate } from '../shared/types'
+import { initMainI18n } from './i18n'
 
 export interface StoreSchema {
   isPinned: boolean
@@ -28,7 +29,8 @@ const store = new Store<StoreSchema>({
       restMinutes: 2,
       soundEnabled: true,
       selectedSound: 'bell',
-      confettiEnabled: true
+      confettiEnabled: true,
+      locale: 'en'
     },
     pendingUpdate: null
   }
@@ -118,6 +120,7 @@ if (!gotTheLock) {
   })
 
   app.whenReady().then(() => {
+    initMainI18n(store)
     initDatabase()
     registerSessionIPC()
     registerWindowIPC(() => mainWindow, store)

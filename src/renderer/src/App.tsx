@@ -14,6 +14,7 @@ import type { MenuTab } from './schemas'
 import { MenuView, TimerView } from './sections'
 import { TIMER_SIZE, MENU_SIZE } from './constants'
 import { UpdateNotification } from './components'
+import { I18nProvider } from './providers'
 
 export default function App(): React.JSX.Element {
   useAudioActivation()
@@ -37,6 +38,7 @@ export default function App(): React.JSX.Element {
   const borderRadius = view === 'menu' ? 'rounded-[2rem]' : 'rounded-[1.5rem]'
 
   return (
+    <I18nProvider locale={config.locale}>
     <div className="app-drag flex h-full w-full items-center justify-center">
       <div
         style={{ width: size.w, height: size.h }}
@@ -85,5 +87,6 @@ export default function App(): React.JSX.Element {
         </AnimatePresence>
       </div>
     </div>
+    </I18nProvider>
   )
 }

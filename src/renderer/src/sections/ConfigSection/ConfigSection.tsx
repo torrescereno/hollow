@@ -1,9 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { RefreshCw, Check } from 'lucide-react'
-import { ConfigSlider, Toggle, SoundSelector, SliderWarning, Button } from '../../components'
+import {
+  ConfigSlider,
+  Toggle,
+  SoundSelector,
+  SliderWarning,
+  Button,
+  LanguageSelector
+} from '../../components'
 import { useSound } from '../../hooks'
 import type { AppConfig, UpdateInfo } from '../../schemas'
 import { MIN_MINUTES, MAX_MINUTES, MAX_REST_MINUTES, FOCUS_WARNING_THRESHOLD } from '../../schemas'
+import { useI18n } from '../../providers'
 
 interface ConfigSectionProps {
   config: AppConfig
@@ -22,6 +30,7 @@ export function ConfigSection({
   onCheckUpdate,
   updateInfo
 }: ConfigSectionProps): React.JSX.Element {
+  const { t, interpolate } = useI18n()
   const { preview, stop } = useSound()
   const [checking, setChecking] = useState(false)
   const [upToDate, setUpToDate] = useState(false)
@@ -49,12 +58,13 @@ export function ConfigSection({
   }
 
   const getUpdateLabel = (): string => {
-    if (isReady) return 'Actualización lista'
-    if (isDownloading) return `Descargando... ${updateInfo?.progress ?? 0}%`
-    if (isUpdating) return 'Actualizando...'
-    if (checking) return 'Verificando...'
-    if (upToDate) return 'Todo al día'
-    return 'Buscar actualizaciones'
+    if (isReady) return t.config.updateReady
+    if (isDownloading)
+      return interpolate(t.config.downloading, { progress: updateInfo?.progress ?? 0 })
+    if (isUpdating) return t.config.updating
+    if (checking) return t.config.checking
+    if (upToDate) return t.config.upToDate
+    return t.config.checkUpdates
   }
 
   return (
@@ -64,8 +74,8 @@ export function ConfigSection({
           value={config.focusMinutes}
           min={MIN_MINUTES}
           max={MAX_MINUTES}
-          label="Duración de enfoque"
-          subtitle={`Mínimo ${MIN_MINUTES} minutos`}
+          label={t.config.focusDuration}
+          subtitle={interpolate(t.config.focusSubtitle, { min: MIN_MINUTES })}
           onChange={(val) => {
             onUpdate({ focusMinutes: val })
             if (!isRunning) onTimeReset(val)
@@ -73,7 +83,7 @@ export function ConfigSection({
         />
         <SliderWarning
           visible={config.focusMinutes > FOCUS_WARNING_THRESHOLD}
-          message="No excedas el tiempo recomendado, cuida tu salud. Sesiones muy largas pueden afectar tu concentración y postura."
+          message={t.config.healthWarning}
         />
       </div>
 
@@ -81,15 +91,15 @@ export function ConfigSection({
         value={config.restMinutes}
         min={MIN_MINUTES}
         max={MAX_REST_MINUTES}
-        label="Duración de descanso"
-        subtitle={`Mínimo ${MIN_MINUTES} minuto`}
+        label={t.config.restDuration}
+        subtitle={interpolate(t.config.restSubtitle, { min: MIN_MINUTES })}
         onChange={(val) => onUpdate({ restMinutes: val })}
       />
 
       <div className="flex flex-col gap-1">
         <Toggle
-          label="Sonido de notificación"
-          subtitle="Reproducir sonido al terminar sesión"
+          label={t.config.sound}
+          subtitle={t.config.soundSubtitle}
           isActive={config.soundEnabled}
           onToggle={() => {
             if (config.soundEnabled) stop()
@@ -107,11 +117,25 @@ export function ConfigSection({
       </div>
 
       <Toggle
-        label="Confetti"
-        subtitle="Lanzar confetti al completar sesión de enfoque"
+        label={t.config.confetti}
+        subtitle={t.config.confettiSubtitle}
         isActive={config.confettiEnabled}
         onToggle={() => onUpdate({ confettiEnabled: !config.confettiEnabled })}
       />
+
+      <div className="flex flex-col gap-1">
+        <Toggle
+          label={t.config.language}
+          subtitle={t.config.languageSubtitle}
+          isActive={false}
+          onToggle={() => {}}
+          showToggle={false}
+        />
+        <LanguageSelector
+          selectedLocale={config.locale}
+          onSelect={(locale) => onUpdate({ locale })}
+        />
+      </div>
 
       <div className="flex justify-center items-center">
         <Button

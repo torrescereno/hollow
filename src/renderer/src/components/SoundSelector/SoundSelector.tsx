@@ -3,6 +3,7 @@ import { Music } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { SoundOption } from '../../schemas'
 import { SOUND_OPTIONS } from '../../schemas'
+import { useI18n } from '../../providers'
 
 interface SoundSelectorProps {
   selectedSound: string
@@ -15,10 +16,13 @@ export function SoundSelector({
   onSelect,
   onPreview
 }: SoundSelectorProps): React.JSX.Element {
+  const { t } = useI18n()
+
   return (
     <div className="mt-3 grid grid-cols-2 gap-2">
       {SOUND_OPTIONS.map((sound: SoundOption) => {
         const isSelected = selectedSound === sound.id
+        const soundName = t.sounds[sound.id as keyof typeof t.sounds] ?? sound.id
 
         return (
           <button
@@ -51,7 +55,7 @@ export function SoundSelector({
                   isSelected ? 'text-foreground font-medium' : 'text-muted-foreground'
                 )}
               >
-                {sound.name}
+                {soundName}
               </span>
             </div>
 

@@ -1,5 +1,8 @@
 import React, { useMemo, useState, useCallback } from 'react'
 import type { DailyActivity } from '../../schemas'
+import type { Translations } from '../../../../shared/i18n'
+import { useI18n } from '../../providers'
+import type { Locale } from '../../../../shared/types'
 
 type HeatmapLevel = 0 | 1 | 2 | 3 | 4
 
@@ -29,20 +32,42 @@ const COLORS: Record<HeatmapLevel, string> = {
   4: 'rgb(255 255 255 / 0.85)'
 }
 
-const DAY_LABELS: [number, string][] = [
-  [1, 'Lu'],
-  [3, 'Mi'],
-  [5, 'Vi']
-]
+const LOCALE_MAP: Record<Locale, string> = {
+  en: 'en-US',
+  es: 'es-ES'
+}
 
-const MONTHS = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+function getDayLabels(t: Translations): [number, string][] {
+  return [
+    [1, t.heatmap.mon],
+    [3, t.heatmap.wed],
+    [5, t.heatmap.fri]
+  ]
+}
+
+function getMonths(t: Translations): string[] {
+  return [
+    t.heatmap.jan,
+    t.heatmap.feb,
+    t.heatmap.mar,
+    t.heatmap.apr,
+    t.heatmap.may,
+    t.heatmap.jun,
+    t.heatmap.jul,
+    t.heatmap.aug,
+    t.heatmap.sep,
+    t.heatmap.oct,
+    t.heatmap.nov,
+    t.heatmap.dec
+  ]
+}
 
 function toDateStr(d: Date): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
-function formatLong(dateStr: string): string {
-  return new Date(dateStr + 'T12:00:00').toLocaleDateString('es-ES', {
+function formatLong(dateStr: string, locale: Locale): string {
+  return new Date(dateStr + 'T12:00:00').toLocaleDateString(LOCALE_MAP[locale], {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -60,7 +85,10 @@ function getLevel(sessions: number, max: number): HeatmapLevel {
   return 4
 }
 
-function buildGrid(data: DailyActivity[]): {
+function buildGrid(
+  data: DailyActivity[],
+  months: string[]
+): {
   weeks: HeatmapCell[][]
   monthLabels: { label: string; col: number }[]
 } {
@@ -95,7 +123,7 @@ function buildGrid(data: DailyActivity[]): {
     if (cursor.getDay() === 0) {
       const month = cursor.getMonth()
       if (month !== prevMonth) {
-        monthLabels.push({ label: MONTHS[month], col: weeks.length })
+        monthLabels.push({ label: months[month], col: weeks.length })
         prevMonth = month
       }
     }
@@ -122,6 +150,11 @@ function buildGrid(data: DailyActivity[]): {
 }
 
 export function ActivityHeatmap({ dailyActivity }: ActivityHeatmapProps): React.JSX.Element {
+  const { t, locale } = useI18n()
+
+  const dayLabels = useMemo(() => getDayLabels(t), [t])
+  const months = useMemo(() => getMonths(t), [t])
+
   const [tooltip, setTooltip] = useState<{
     cell: HeatmapCell
     x: number
@@ -129,8 +162,8 @@ export function ActivityHeatmap({ dailyActivity }: ActivityHeatmapProps): React.
   } | null>(null)
 
   const { weeks, monthLabels } = useMemo(
-    () => buildGrid(dailyActivity ?? []),
-    [dailyActivity]
+    () => buildGrid(dailyActivity ?? [], months),
+    [dailyActivity, months]
   )
 
   const handleEnter = useCallback((e: React.MouseEvent, cell: HeatmapCell) => {
@@ -142,7 +175,9 @@ export function ActivityHeatmap({ dailyActivity }: ActivityHeatmapProps): React.
 
   return (
     <div className="bg-white/8 rounded-xl p-5 border border-white/10">
-      <span className="text-xs text-white/40 uppercase tracking-wider block mb-3">Actividad</span>
+      <span className="text-xs text-white/40 uppercase tracking-wider block mb-3">
+        {t.heatmap.activity}
+      </span>
 
       {/* Month labels */}
       <div className="relative" style={{ height: LABEL_H, marginLeft: LABEL_W }}>
@@ -166,7 +201,7 @@ export function ActivityHeatmap({ dailyActivity }: ActivityHeatmapProps): React.
               className="text-[10px] text-white/25 flex items-center"
               style={{ height: CELL }}
             >
-              {DAY_LABELS.find(([idx]) => idx === i)?.[1] ?? ''}
+              {dayLabels.find(([idx]) => idx === i)?.[1] ?? ''}
             </span>
           ))}
         </div>
@@ -196,7 +231,7 @@ export function ActivityHeatmap({ dailyActivity }: ActivityHeatmapProps): React.
 
       {/* Legend */}
       <div className="flex items-center justify-end gap-1.5 mt-3">
-        <span className="text-[10px] text-white/25">Menos</span>
+        <span className="text-[10px] text-white/25">{t.heatmap.less}</span>
         {([0, 1, 2, 3, 4] as HeatmapLevel[]).map((level) => (
           <div
             key={level}
@@ -204,7 +239,7 @@ export function ActivityHeatmap({ dailyActivity }: ActivityHeatmapProps): React.
             style={{ width: 8, height: 8, background: COLORS[level] }}
           />
         ))}
-        <span className="text-[10px] text-white/25">Más</span>
+        <span className="text-[10px] text-white/25">{t.heatmap.more}</span>
       </div>
 
       {/* Tooltip */}
@@ -220,11 +255,11 @@ export function ActivityHeatmap({ dailyActivity }: ActivityHeatmapProps): React.
         >
           <div className="text-xs text-white/80 font-medium">
             {tooltip.cell.sessions === 0
-              ? 'Sin sesiones'
-              : `${tooltip.cell.sessions} ${tooltip.cell.sessions === 1 ? 'sesión' : 'sesiones'}`}
+              ? t.heatmap.noSessions
+              : `${tooltip.cell.sessions} ${tooltip.cell.sessions === 1 ? t.heatmap.session : t.heatmap.sessions}`}
           </div>
           <div className="text-[10px] text-white/40 capitalize">
-            {formatLong(tooltip.cell.date)}
+            {formatLong(tooltip.cell.date, locale)}
           </div>
         </div>
       )}

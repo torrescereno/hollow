@@ -69,7 +69,7 @@ export function useTimer(
 
       // Play sound
       if (configRef.current.soundEnabled) {
-        playCompletionSound(configRef.current.selectedSound)
+        playCompletionSound(configRef.current.selectedSound, configRef.current.locale)
       }
 
       // Transition to rest
@@ -78,7 +78,7 @@ export function useTimer(
     } else {
       // Rest completed → play sound and return to focus
       if (configRef.current.soundEnabled) {
-        playCompletionSound(configRef.current.selectedSound)
+        playCompletionSound(configRef.current.selectedSound, configRef.current.locale)
       }
 
       setTimerPhase('focus')

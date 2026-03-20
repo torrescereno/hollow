@@ -4,6 +4,7 @@ import type confetti from 'canvas-confetti'
 import { Timer, Controls } from '../../components'
 import { createConfetti } from '../../utils'
 import type { TimerPhase } from '../../hooks/useTimer'
+import { useI18n } from '../../providers'
 
 interface TimerViewProps {
   timeLeft: number
@@ -30,6 +31,7 @@ export function TimerView({
   onTogglePin,
   onOpenMenu
 }: TimerViewProps): React.JSX.Element {
+  const { t } = useI18n()
   const prevPhaseRef = useRef<TimerPhase>(timerPhase)
   const confettiFnRef = useRef<confetti.CreateTypes | null>(null)
 
@@ -93,7 +95,7 @@ export function TimerView({
                   transition={{ duration: 0.2, ease: 'easeInOut' }}
                   className="text-4xl font-light text-white/75"
                 >
-                  Descanso
+                  {t.timer.rest}
                 </motion.span>
               )}
             </AnimatePresence>

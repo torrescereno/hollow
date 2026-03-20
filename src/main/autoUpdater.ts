@@ -4,6 +4,7 @@ import { is } from '@electron-toolkit/utils'
 import type Store from 'electron-store'
 import type { StoreSchema } from './index'
 import type { UpdateInfo, UpdateMetadata, UpdatePriority, PendingUpdate } from '../shared/types'
+import { getMainTranslations, interpolate } from './i18n'
 
 const RELEASE_URL = 'https://github.com/torrescereno/hollow/releases/latest'
 const METADATA_URL =
@@ -150,12 +151,14 @@ async function fetchUpdateMetadata(): Promise<UpdateMetadata | null> {
 }
 
 function showLinuxManualUpdateDialog(version: string): void {
+  const t = getMainTranslations()
+
   dialog
     .showMessageBox({
       type: 'info',
-      title: 'Actualización disponible',
-      message: `Una nueva versión (${version}) esta disponible. Por favor descargue desde el repositorio de GitHub.`,
-      buttons: ['Descargar', 'En otro momento']
+      title: t.updater.title,
+      message: interpolate(t.updater.linuxMessage, { version }),
+      buttons: [t.updater.downloadBtn, t.updater.laterBtn]
     })
     .then((result) => {
       if (result.response === 0) {
@@ -165,26 +168,27 @@ function showLinuxManualUpdateDialog(version: string): void {
 }
 
 function showMacOSManualUpdateDialog(version: string, priority: UpdatePriority): void {
-  const priorityLabels = {
-    normal: '',
-    security: ' (Security)',
-    critical: ' (Critical)'
+  const t = getMainTranslations()
+
+  const titleMap: Record<UpdatePriority, string> = {
+    normal: t.updater.title,
+    security: t.updater.titleSecurity,
+    critical: t.updater.titleCritical
   }
 
-  const priorityMessages = {
+  const noteMap: Record<UpdatePriority, string> = {
     normal: '',
-    security: ' Esta versión incluye correcciones de seguridad importantes.',
-    critical: ' Esta versión incluye correcciones críticas que deben instalarse.'
+    security: t.updater.macSecurityNote,
+    critical: t.updater.macCriticalNote
   }
 
   dialog
     .showMessageBox({
       type: priority === 'critical' ? 'warning' : 'info',
-      title: `Actualización disponible${priorityLabels[priority]}`,
-      message: `Una nueva versión (${version}) está disponible.${priorityMessages[priority]}`,
-      detail:
-        'Las actualizaciones automáticas no están disponibles en macOS. Puedes descargar la nueva versión desde GitHub.',
-      buttons: ['Descargar ahora', 'Recordar después']
+      title: titleMap[priority],
+      message: `${interpolate(t.updater.macMessage, { version })}${noteMap[priority]}`,
+      detail: t.updater.macDetail,
+      buttons: [t.updater.downloadNow, t.updater.remindLater]
     })
     .then((result) => {
       if (result.response === 0) {

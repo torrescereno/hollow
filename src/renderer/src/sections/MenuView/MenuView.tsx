@@ -5,6 +5,7 @@ import { BackButton, MenuNav, MenuFooter } from '../../components'
 import { StatsSection } from '../StatsSection'
 import { ConfigSection } from '../ConfigSection'
 import type { Stats, AppConfig, MenuTab, UpdateInfo } from '../../schemas'
+import { useI18n } from '../../providers'
 
 interface MenuViewProps {
   menuTab: MenuTab
@@ -35,9 +36,11 @@ export function MenuView({
   updateInfo,
   onBack
 }: MenuViewProps): React.JSX.Element {
+  const { t } = useI18n()
+
   const menuItems = [
-    { key: 'stats' as const, label: 'Estadísticas', Icon: BarChart2 },
-    { key: 'config' as const, label: 'Configuración', Icon: Settings }
+    { key: 'stats' as const, label: t.menu.stats, Icon: BarChart2 },
+    { key: 'config' as const, label: t.menu.config, Icon: Settings }
   ]
 
   return (
@@ -66,12 +69,10 @@ export function MenuView({
           >
             <header>
               <h1 className="text-2xl font-light tracking-[-0.025em] text-text-main mb-1">
-                {menuTab === 'stats' ? 'Estadísticas' : 'Configuración'}
+                {menuTab === 'stats' ? t.menu.stats : t.menu.config}
               </h1>
               <p className="text-xs text-white/25 tracking-[0.025em] mb-6">
-                {menuTab === 'stats'
-                  ? 'Tu historial de sesiones de enfoque'
-                  : 'Ajusta tus preferencias de temporizador'}
+                {menuTab === 'stats' ? t.menu.statsSubtitle : t.menu.configSubtitle}
               </p>
             </header>
 

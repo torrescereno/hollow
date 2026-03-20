@@ -3,6 +3,7 @@ import { Pause, Pin, PinOff, Play, RotateCcw, SkipForward, Menu as MenuIcon } fr
 import { motion } from 'motion/react'
 import { Button } from '@/components/ui/button'
 import type { TimerPhase } from '../../hooks/useTimer'
+import { useI18n } from '../../providers'
 
 const collapseTransition = { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const }
 
@@ -27,6 +28,7 @@ export function Controls({
   onSkipRest,
   onOpenMenu
 }: ControlsProps): React.JSX.Element {
+  const { t } = useI18n()
   const isRest = timerPhase === 'rest'
 
   return (
@@ -45,13 +47,13 @@ export function Controls({
           variant="icon"
           size="icon-sm"
           onClick={onTogglePin}
-          aria-label={isPinned ? 'Desanclar Ventana' : 'Anclar ventana'}
+          aria-label={isPinned ? t.controls.unpinWindow : t.controls.pinWindow}
           isActive={isPinned}
         >
           {isPinned ? <PinOff size={15} strokeWidth={1.5} /> : <Pin size={15} strokeWidth={1.5} />}
         </Button>
 
-        <Button variant="icon" size="icon-sm" onClick={onReset} aria-label="Reiniciar">
+        <Button variant="icon" size="icon-sm" onClick={onReset} aria-label={t.controls.reset}>
           <RotateCcw size={15} strokeWidth={1.5} />
         </Button>
       </motion.div>
@@ -60,7 +62,7 @@ export function Controls({
         variant="play"
         size="icon"
         onClick={onToggleTimer}
-        aria-label={isRunning ? 'Pausar' : 'Iniciar'}
+        aria-label={isRunning ? t.controls.pause : t.controls.start}
         className={isRunning ? 'shadow-[0_0_20px_rgba(255,255,255,0.15)]' : ''}
       >
         {isRunning ? (
@@ -77,11 +79,11 @@ export function Controls({
         className="overflow-hidden"
       >
         {isRest ? (
-          <Button variant="icon" size="icon-sm" onClick={onSkipRest} aria-label="Saltar descanso">
+          <Button variant="icon" size="icon-sm" onClick={onSkipRest} aria-label={t.controls.skipRest}>
             <SkipForward size={15} strokeWidth={1.5} />
           </Button>
         ) : (
-          <Button variant="icon" size="icon-sm" onClick={onOpenMenu} aria-label="Menú">
+          <Button variant="icon" size="icon-sm" onClick={onOpenMenu} aria-label={t.controls.menu}>
             <MenuIcon size={15} strokeWidth={1.5} />
           </Button>
         )}

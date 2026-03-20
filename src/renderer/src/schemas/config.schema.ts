@@ -3,15 +3,14 @@ import type { AppConfig } from '../../../shared/types'
 
 export interface SoundOption {
   id: string
-  name: string
   filename: string
 }
 
 export const SOUND_OPTIONS: SoundOption[] = [
-  { id: 'bell', name: 'Campana Clásica', filename: 'bell.wav' },
-  { id: 'digital', name: 'Pitido Digital', filename: 'digital.wav' },
-  { id: 'wood', name: 'Bloque de Madera', filename: 'wood.wav' },
-  { id: 'bowl', name: 'Cuenco Tibetano', filename: 'bowl.wav' }
+  { id: 'bell', filename: 'bell.wav' },
+  { id: 'digital', filename: 'digital.wav' },
+  { id: 'wood', filename: 'wood.wav' },
+  { id: 'bowl', filename: 'bowl.wav' }
 ]
 
 export const DEFAULT_CONFIG: AppConfig = {
@@ -19,7 +18,8 @@ export const DEFAULT_CONFIG: AppConfig = {
   restMinutes: 2,
   soundEnabled: true,
   selectedSound: 'bell',
-  confettiEnabled: true
+  confettiEnabled: true,
+  locale: 'en'
 }
 
 export const FOCUS_WARNING_THRESHOLD = 30

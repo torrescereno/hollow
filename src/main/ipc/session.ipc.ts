@@ -4,6 +4,7 @@ import { join } from 'path'
 import { sessionRepository, streakRepository } from '../../database/repositories'
 import { statsService } from '../../database/services/stats.service'
 import type { NewSession } from '../../database/schema'
+import { getMainTranslations, interpolate } from '../i18n'
 
 export function registerSessionIPC(): void {
   ipcMain.handle('session:create', (_event, data: NewSession) => {
@@ -114,9 +115,11 @@ export function registerSessionIPC(): void {
 
       const icon = nativeImage.createFromPath(join(process.resourcesPath, 'icon.png'))
 
+      const t = getMainTranslations()
+
       new Notification({
-        title: 'Exportación completada',
-        body: `Se exportaron ${allSessions.length} sesiones a CSV`,
+        title: t.notifications.exportTitle,
+        body: interpolate(t.notifications.exportBody, { count: allSessions.length }),
         icon
       }).show()
 
