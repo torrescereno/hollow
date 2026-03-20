@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.7.0](https://github.com/torrescereno/hollow/compare/v3.6.0...v3.7.0) (2026-03-20)
+
+
+### Features
+
+* add i18n ([14497d4](https://github.com/torrescereno/hollow/commit/14497d4ec0615184dcc8a664d0b4ba8b5aea899b))
+* add i18n ([9461c78](https://github.com/torrescereno/hollow/commit/9461c78badf5da2871d305909548b5d8b5700b55))
+* update readme ([421a448](https://github.com/torrescereno/hollow/commit/421a448f58f0de02780183c6a1586bdd1ae33f01))
+
+
+### Bug Fixes
+
+* lint ([0c8a801](https://github.com/torrescereno/hollow/commit/0c8a8017704c150af468fd2ee0f8cf219a5015ad))
+* lint ([cb27f0b](https://github.com/torrescereno/hollow/commit/cb27f0bb4fde4e1275907fd7891016b7eb4dda6e))
+
 ## [3.6.0](https://github.com/torrescereno/hollow/compare/v3.5.2...v3.6.0) (2026-03-18)
 
 
