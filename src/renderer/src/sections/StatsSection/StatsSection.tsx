@@ -32,11 +32,9 @@ export function StatsSection({
     const daysLeft = stats.bestStreak - stats.streak
 
     if (stats.bestStreak === 0) return t.motivational.startFirst
-    if (stats.streak === 0)
-      return interpolate(t.motivational.getBack, { best: stats.bestStreak })
+    if (stats.streak === 0) return interpolate(t.motivational.getBack, { best: stats.bestStreak })
     if (daysLeft <= 0) return t.motivational.bestStreak
-    if (stats.streak <= 3)
-      return interpolate(t.motivational.goodStart, { left: daysLeft })
+    if (stats.streak <= 3) return interpolate(t.motivational.goodStart, { left: daysLeft })
     return interpolate(t.motivational.onStreak, { left: daysLeft })
   }
 

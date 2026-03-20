@@ -191,7 +191,8 @@ export const sessionRepository = {
     const dayMap = new Map<string, { sessions: number; totalMinutes: number }>()
 
     for (const row of rows) {
-      const d = row.startTime instanceof Date ? row.startTime : new Date((row.startTime as number) * 1000)
+      const d =
+        row.startTime instanceof Date ? row.startTime : new Date((row.startTime as number) * 1000)
       const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
       const existing = dayMap.get(dateStr)
       if (existing) {

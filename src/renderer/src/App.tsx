@@ -39,54 +39,54 @@ export default function App(): React.JSX.Element {
 
   return (
     <I18nProvider locale={config.locale}>
-    <div className="app-drag flex h-full w-full items-center justify-center">
-      <div
-        style={{ width: size.w, height: size.h }}
-        className={`window-container relative overflow-hidden bg-bg-window border-none ${borderRadius}`}
-      >
-        <UpdateNotification
-          updateInfo={updateInfo}
-          onRestart={restartNow}
-          onSnooze={snoozeUpdate}
-          onDismiss={dismissUpdate}
-        />
-        <AnimatePresence mode="wait" onExitComplete={onExitComplete}>
-          {view === 'timer' && transitionPhase !== 'exiting' ? (
-            <TimerView
-              key="timer"
-              timeLeft={timeLeft}
-              isRunning={isRunning}
-              isPinned={isPinned}
-              timerPhase={timerPhase}
-              confettiEnabled={config.confettiEnabled}
-              onToggleTimer={toggleTimer}
-              onResetTimer={resetTimer}
-              onSkipRest={skipRest}
-              onTogglePin={togglePin}
-              onOpenMenu={() => switchView('menu')}
-            />
-          ) : null}
+      <div className="app-drag flex h-full w-full items-center justify-center">
+        <div
+          style={{ width: size.w, height: size.h }}
+          className={`window-container relative overflow-hidden bg-bg-window border-none ${borderRadius}`}
+        >
+          <UpdateNotification
+            updateInfo={updateInfo}
+            onRestart={restartNow}
+            onSnooze={snoozeUpdate}
+            onDismiss={dismissUpdate}
+          />
+          <AnimatePresence mode="wait" onExitComplete={onExitComplete}>
+            {view === 'timer' && transitionPhase !== 'exiting' ? (
+              <TimerView
+                key="timer"
+                timeLeft={timeLeft}
+                isRunning={isRunning}
+                isPinned={isPinned}
+                timerPhase={timerPhase}
+                confettiEnabled={config.confettiEnabled}
+                onToggleTimer={toggleTimer}
+                onResetTimer={resetTimer}
+                onSkipRest={skipRest}
+                onTogglePin={togglePin}
+                onOpenMenu={() => switchView('menu')}
+              />
+            ) : null}
 
-          {view === 'menu' && transitionPhase !== 'exiting' ? (
-            <MenuView
-              key="menu"
-              menuTab={menuTab}
-              stats={stats}
-              config={config}
-              isRunning={isRunning}
-              onMenuTabChange={setMenuTab}
-              onUpdateConfig={updateConfig}
-              onTimeReset={(val) => setTimeLeft(val * 60)}
-              onClearSessions={clearSessions}
-              onExportCsv={exportCsv}
-              onCheckUpdate={checkForUpdates}
-              updateInfo={updateInfo}
-              onBack={() => switchView('timer')}
-            />
-          ) : null}
-        </AnimatePresence>
+            {view === 'menu' && transitionPhase !== 'exiting' ? (
+              <MenuView
+                key="menu"
+                menuTab={menuTab}
+                stats={stats}
+                config={config}
+                isRunning={isRunning}
+                onMenuTabChange={setMenuTab}
+                onUpdateConfig={updateConfig}
+                onTimeReset={(val) => setTimeLeft(val * 60)}
+                onClearSessions={clearSessions}
+                onExportCsv={exportCsv}
+                onCheckUpdate={checkForUpdates}
+                updateInfo={updateInfo}
+                onBack={() => switchView('timer')}
+              />
+            ) : null}
+          </AnimatePresence>
+        </div>
       </div>
-    </div>
     </I18nProvider>
   )
 }

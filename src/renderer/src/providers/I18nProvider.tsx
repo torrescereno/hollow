@@ -29,6 +29,7 @@ export function I18nProvider({ locale, children }: I18nProviderProps): React.JSX
   return <I18nContext value={value}>{children}</I18nContext>
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useI18n(): I18nContextValue {
   const ctx = useContext(I18nContext)
   if (!ctx) {

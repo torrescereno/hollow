@@ -79,7 +79,12 @@ export function Controls({
         className="overflow-hidden"
       >
         {isRest ? (
-          <Button variant="icon" size="icon-sm" onClick={onSkipRest} aria-label={t.controls.skipRest}>
+          <Button
+            variant="icon"
+            size="icon-sm"
+            onClick={onSkipRest}
+            aria-label={t.controls.skipRest}
+          >
             <SkipForward size={15} strokeWidth={1.5} />
           </Button>
         ) : (
