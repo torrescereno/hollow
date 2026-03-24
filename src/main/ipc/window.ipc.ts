@@ -2,9 +2,22 @@ import { ipcMain, type BrowserWindow } from 'electron'
 import type Store from 'electron-store'
 import type { StoreSchema } from '../index'
 
+export type TimerPhase = 'focus' | 'rest'
+
+export interface BackgroundTimerSyncPayload {
+  isRunning: boolean
+  timeLeft: number
+  timerPhase: TimerPhase
+}
+
+interface BackgroundTaskController {
+  syncTimer: (payload: BackgroundTimerSyncPayload) => void
+}
+
 export function registerWindowIPC(
   getWindow: () => BrowserWindow | null,
-  store: Store<StoreSchema>
+  store: Store<StoreSchema>,
+  backgroundTaskController: BackgroundTaskController
 ): void {
   ipcMain.handle('set-always-on-top', (_event, isPinned: boolean) => {
     try {
@@ -65,6 +78,14 @@ export function registerWindowIPC(
       if (win) win.close()
     } catch (error) {
       console.error('Failed to close window:', error)
+    }
+  })
+
+  ipcMain.handle('background-task:sync-timer', (_event, payload: BackgroundTimerSyncPayload) => {
+    try {
+      backgroundTaskController.syncTimer(payload)
+    } catch (error) {
+      console.error('Failed to sync background timer:', error)
     }
   })
 }

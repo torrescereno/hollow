@@ -6,5 +6,6 @@ export interface AppConfig {
   soundEnabled: boolean
   selectedSound: string
   confettiEnabled: boolean
+  backgroundTrayEnabled: boolean
   locale: Locale
 }

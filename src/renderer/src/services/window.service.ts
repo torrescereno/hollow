@@ -13,6 +13,14 @@ class WindowService {
     electronService.onPinnedState(callback)
   }
 
+  async syncBackgroundTimer(payload: {
+    isRunning: boolean
+    timeLeft: number
+    timerPhase: 'focus' | 'rest'
+  }): Promise<void> {
+    await electronService.syncBackgroundTimer(payload)
+  }
+
   async resize(width: number, height: number): Promise<void> {
     await electronService.resizeWindow(width, height)
   }

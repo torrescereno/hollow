@@ -12,6 +12,7 @@ import { useSound } from '../../hooks'
 import type { AppConfig, UpdateInfo } from '../../schemas'
 import { MIN_MINUTES, MAX_MINUTES, MAX_REST_MINUTES, FOCUS_WARNING_THRESHOLD } from '../../schemas'
 import { useI18n } from '../../providers'
+import { electronService } from '../../services'
 
 interface ConfigSectionProps {
   config: AppConfig
@@ -34,7 +35,15 @@ export function ConfigSection({
   const { preview, stop } = useSound()
   const [checking, setChecking] = useState(false)
   const [upToDate, setUpToDate] = useState(false)
+  const [isMacOS, setIsMacOS] = useState(false)
   const updateInfoRef = useRef(updateInfo)
+
+  useEffect(() => {
+    electronService.getPlatform().then((platform) => {
+      setIsMacOS(platform === 'darwin')
+    })
+  }, [])
+
   useEffect(() => {
     updateInfoRef.current = updateInfo
   })
@@ -115,6 +124,15 @@ export function ConfigSection({
           />
         )}
       </div>
+
+      {isMacOS && (
+        <Toggle
+          label={t.config.backgroundTray}
+          subtitle={t.config.backgroundTraySubtitle}
+          isActive={config.backgroundTrayEnabled}
+          onToggle={() => onUpdate({ backgroundTrayEnabled: !config.backgroundTrayEnabled })}
+        />
+      )}
 
       <Toggle
         label={t.config.confetti}

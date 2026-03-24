@@ -49,6 +49,7 @@ export function Controls({
           onClick={onTogglePin}
           aria-label={isPinned ? t.controls.unpinWindow : t.controls.pinWindow}
           isActive={isPinned}
+          className="focus:ring-0 focus-visible:ring-0 focus:outline-none focus:ring-offset-0"
         >
           {isPinned ? <PinOff size={15} strokeWidth={1.5} /> : <Pin size={15} strokeWidth={1.5} />}
         </Button>
@@ -63,6 +64,7 @@ export function Controls({
         size="icon"
         onClick={onToggleTimer}
         aria-label={isRunning ? t.controls.pause : t.controls.start}
+        data-role="primary-timer-action"
         className={isRunning ? 'shadow-[0_0_20px_rgba(255,255,255,0.15)]' : ''}
       >
         {isRunning ? (

@@ -18,6 +18,14 @@ class ElectronService {
     this.api?.onPinnedState(callback)
   }
 
+  async syncBackgroundTimer(payload: {
+    isRunning: boolean
+    timeLeft: number
+    timerPhase: 'focus' | 'rest'
+  }): Promise<void> {
+    await this.api?.backgroundTask.syncTimer(payload)
+  }
+
   async resizeWindow(width: number, height: number): Promise<void> {
     await this.api?.resizeWindow(width, height)
   }
@@ -77,6 +85,10 @@ class ElectronService {
 
   async getAppVersion(): Promise<string> {
     return (await this.api?.getAppVersion()) ?? '0.0.0'
+  }
+
+  async getPlatform(): Promise<string> {
+    return (await this.api?.getPlatform()) ?? 'unknown'
   }
 }
 

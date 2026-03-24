@@ -15,6 +15,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.on('pinned-state', (_event, isPinned: boolean) => callback(isPinned))
   },
 
+  backgroundTask: {
+    syncTimer: (payload: { isRunning: boolean; timeLeft: number; timerPhase: 'focus' | 'rest' }) =>
+      ipcRenderer.invoke('background-task:sync-timer', payload)
+  },
+
   session: {
     create: (data: NewSession) => ipcRenderer.invoke('session:create', data),
     getAll: (): Promise<Session[]> => ipcRenderer.invoke('session:get-all'),
@@ -30,6 +35,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
   openExternal: (url: string): Promise<boolean> => ipcRenderer.invoke('shell:open-external', url),
   getAppVersion: (): Promise<string> => ipcRenderer.invoke('app:get-version'),
+  getPlatform: (): Promise<string> => ipcRenderer.invoke('app:get-platform'),
 
   update: {
     check: (): Promise<boolean> => ipcRenderer.invoke('update:check'),

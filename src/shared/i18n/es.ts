@@ -17,6 +17,8 @@ export const es = {
     restSubtitle: 'Mínimo {{min}} minuto',
     sound: 'Sonido de notificación',
     soundSubtitle: 'Reproducir sonido al terminar sesión',
+    backgroundTray: 'Modo tray en segundo plano',
+    backgroundTraySubtitle: 'Envía la app al tray al perder foco si la ventana no está anclada',
     confetti: 'Confetti',
     confettiSubtitle: 'Lanzar confetti al completar sesión de enfoque',
     language: 'Idioma',

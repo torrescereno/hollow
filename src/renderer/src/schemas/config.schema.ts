@@ -19,6 +19,7 @@ export const DEFAULT_CONFIG: AppConfig = {
   soundEnabled: true,
   selectedSound: 'bell',
   confettiEnabled: true,
+  backgroundTrayEnabled: false,
   locale: 'en'
 }
 

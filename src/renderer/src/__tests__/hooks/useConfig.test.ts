@@ -23,6 +23,7 @@ describe('useConfig', () => {
       soundEnabled: false,
       selectedSound: 'chime',
       confettiEnabled: true,
+      backgroundTrayEnabled: false,
       locale: 'en'
     }
 
@@ -73,6 +74,7 @@ describe('useConfig', () => {
       soundEnabled: true,
       selectedSound: 'bell',
       confettiEnabled: true,
+      backgroundTrayEnabled: false,
       locale: 'en'
     }
 

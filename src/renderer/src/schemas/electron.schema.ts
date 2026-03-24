@@ -13,6 +13,13 @@ export interface ElectronAPI {
   saveConfig: (config: AppConfig) => Promise<void>
   loadConfig: () => Promise<AppConfig>
   onPinnedState: (callback: (isPinned: boolean) => void) => void
+  backgroundTask: {
+    syncTimer: (payload: {
+      isRunning: boolean
+      timeLeft: number
+      timerPhase: 'focus' | 'rest'
+    }) => Promise<void>
+  }
   session: {
     create: (data: Omit<SessionRecord, 'id' | 'createdAt'>) => Promise<SessionRecord>
     getAll: () => Promise<SessionRecord[]>
@@ -25,6 +32,7 @@ export interface ElectronAPI {
   }
   openExternal: (url: string) => Promise<boolean>
   getAppVersion: () => Promise<string>
+  getPlatform: () => Promise<string>
   update: {
     check: () => Promise<boolean>
     getStatus: () => Promise<UpdateInfo>

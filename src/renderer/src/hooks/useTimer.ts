@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef, type Dispatch, type SetStateAction } from 'react'
 import type { AppConfig } from '../schemas'
 import { playCompletionSound } from '../utils'
 import type { SessionRecord } from '../schemas/session.schema'
@@ -21,32 +21,51 @@ export function useTimer(
   configRef: React.MutableRefObject<AppConfig>,
   onSessionComplete: (session: Omit<SessionRecord, 'id' | 'createdAt'>) => void
 ): UseTimerReturn {
-  const [timeLeft, setTimeLeft] = useState(focusMinutes * 60)
+  const [timeLeft, setTimeLeftState] = useState(focusMinutes * 60)
   const [isRunning, setIsRunning] = useState(false)
   const [timerPhase, setTimerPhase] = useState<TimerPhase>('focus')
+  const targetEndTimeRef = useRef<number | null>(null)
+  const timeLeftRef = useRef(timeLeft)
+
+  useEffect(() => {
+    timeLeftRef.current = timeLeft
+  }, [timeLeft])
 
   // Sync focusMinutes changes (only during focus phase)
   useEffect(() => {
     if (timerPhase === 'focus') {
+      if (isRunning) {
+        targetEndTimeRef.current = Date.now() + focusMinutes * 1000 * 60
+      }
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setTimeLeft(focusMinutes * 60)
+      setTimeLeftState(focusMinutes * 60)
     }
-  }, [focusMinutes, timerPhase])
+  }, [focusMinutes, timerPhase, isRunning])
 
   // Sync restMinutes changes (only during rest phase when not running)
   useEffect(() => {
     if (timerPhase === 'rest' && !isRunning) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setTimeLeft(restMinutes * 60)
+      setTimeLeftState(restMinutes * 60)
     }
   }, [restMinutes, timerPhase, isRunning])
 
-  // Countdown
+  // Countdown (timestamp-based to avoid hidden-window timer drift)
   useEffect(() => {
-    if (!isRunning || timeLeft <= 0) return
-    const id = setInterval(() => setTimeLeft((t) => t - 1), 1000)
+    if (!isRunning) return
+
+    const syncTimeLeft = (): void => {
+      const targetEndTime = targetEndTimeRef.current
+      if (targetEndTime === null) return
+
+      const remainingSeconds = Math.max(0, Math.ceil((targetEndTime - Date.now()) / 1000))
+      setTimeLeftState((current) => (current === remainingSeconds ? current : remainingSeconds))
+    }
+
+    syncTimeLeft()
+    const id = setInterval(syncTimeLeft, 250)
     return () => clearInterval(id)
-  }, [isRunning, timeLeft])
+  }, [isRunning])
 
   // Completion effect
   useEffect(() => {
@@ -54,6 +73,7 @@ export function useTimer(
 
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsRunning(false)
+    targetEndTimeRef.current = null
 
     if (timerPhase === 'focus') {
       // Log session
@@ -74,7 +94,7 @@ export function useTimer(
 
       // Transition to rest
       setTimerPhase('rest')
-      setTimeLeft(configRef.current.restMinutes * 60)
+      setTimeLeftState(configRef.current.restMinutes * 60)
     } else {
       // Rest completed → play sound and return to focus
       if (configRef.current.soundEnabled) {
@@ -82,25 +102,54 @@ export function useTimer(
       }
 
       setTimerPhase('focus')
-      setTimeLeft(configRef.current.focusMinutes * 60)
+      setTimeLeftState(configRef.current.focusMinutes * 60)
     }
   }, [timeLeft, isRunning, timerPhase, configRef, onSessionComplete])
 
   const toggleTimer = useCallback(() => {
-    setIsRunning((r) => !r)
+    setIsRunning((running) => {
+      if (running) {
+        const targetEndTime = targetEndTimeRef.current
+        const remainingSeconds =
+          targetEndTime === null
+            ? timeLeftRef.current
+            : Math.max(0, Math.ceil((targetEndTime - Date.now()) / 1000))
+        targetEndTimeRef.current = null
+        setTimeLeftState(remainingSeconds)
+        return false
+      }
+
+      targetEndTimeRef.current = Date.now() + timeLeftRef.current * 1000
+      return true
+    })
   }, [])
 
   const resetTimer = useCallback(() => {
+    targetEndTimeRef.current = null
     setIsRunning(false)
     setTimerPhase('focus')
-    setTimeLeft(focusMinutes * 60)
+    setTimeLeftState(focusMinutes * 60)
   }, [focusMinutes])
 
   const skipRest = useCallback(() => {
+    targetEndTimeRef.current = null
     setIsRunning(false)
     setTimerPhase('focus')
-    setTimeLeft(focusMinutes * 60)
+    setTimeLeftState(focusMinutes * 60)
   }, [focusMinutes])
+
+  const setTimeLeft: Dispatch<SetStateAction<number>> = useCallback(
+    (value) => {
+      setTimeLeftState((current) => {
+        const nextValue = typeof value === 'function' ? value(current) : value
+        if (isRunning) {
+          targetEndTimeRef.current = Date.now() + nextValue * 1000
+        }
+        return nextValue
+      })
+    },
+    [isRunning]
+  )
 
   return {
     timeLeft,
