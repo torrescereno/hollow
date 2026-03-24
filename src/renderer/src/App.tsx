@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AnimatePresence } from 'motion/react'
 import {
   useConfig,
@@ -15,6 +15,7 @@ import { MenuView, TimerView } from './sections'
 import { TIMER_SIZE, MENU_SIZE } from './constants'
 import { UpdateNotification } from './components'
 import { I18nProvider } from './providers'
+import { windowService } from './services'
 
 export default function App(): React.JSX.Element {
   useAudioActivation()
@@ -36,6 +37,35 @@ export default function App(): React.JSX.Element {
 
   const size = view === 'menu' ? MENU_SIZE : TIMER_SIZE
   const borderRadius = view === 'menu' ? 'rounded-[2rem]' : 'rounded-[1.5rem]'
+
+  useEffect(() => {
+    void windowService.syncBackgroundTimer({
+      isRunning,
+      timeLeft,
+      timerPhase
+    })
+  }, [isRunning, timeLeft, timerPhase])
+
+  useEffect(() => {
+    const clearFocusOnWindowFocus = (): void => {
+      const activeElement = document.activeElement
+      if (activeElement instanceof HTMLElement) {
+        activeElement.blur()
+      }
+
+      requestAnimationFrame(() => {
+        const primaryActionButton = document.querySelector<HTMLElement>(
+          '[data-role="primary-timer-action"]'
+        )
+        primaryActionButton?.focus({ preventScroll: true })
+      })
+    }
+
+    window.addEventListener('focus', clearFocusOnWindowFocus)
+    return () => {
+      window.removeEventListener('focus', clearFocusOnWindowFocus)
+    }
+  }, [])
 
   return (
     <I18nProvider locale={config.locale}>

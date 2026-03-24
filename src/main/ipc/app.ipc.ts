@@ -6,6 +6,10 @@ export function registerAppIPC(): void {
     return app.getVersion()
   })
 
+  ipcMain.handle('app:get-platform', () => {
+    return process.platform
+  })
+
   ipcMain.handle('shell:open-external', async (_event, url: string) => {
     const validation = validateExternalUrl(url)
 

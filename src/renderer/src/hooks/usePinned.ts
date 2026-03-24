@@ -20,5 +20,8 @@ export function usePinned(): UsePinnedReturn {
     setIsPinned(newPinned)
   }
 
-  return { isPinned, togglePin }
+  return {
+    isPinned,
+    togglePin
+  }
 }

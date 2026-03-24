@@ -15,6 +15,8 @@ export interface Translations {
     restSubtitle: string
     sound: string
     soundSubtitle: string
+    backgroundTray: string
+    backgroundTraySubtitle: string
     confetti: string
     confettiSubtitle: string
     language: string

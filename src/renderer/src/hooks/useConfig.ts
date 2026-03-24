@@ -19,7 +19,7 @@ export function useConfig(): UseConfigReturn {
 
   useEffect(() => {
     configService.load().then((saved) => {
-      if (saved) setConfig(saved)
+      if (saved) setConfig({ ...DEFAULT_CONFIG, ...saved })
     })
   }, [])
 

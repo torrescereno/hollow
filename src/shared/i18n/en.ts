@@ -17,6 +17,8 @@ export const en = {
     restSubtitle: 'Minimum {{min}} minute',
     sound: 'Notification sound',
     soundSubtitle: 'Play sound when session ends',
+    backgroundTray: 'Background tray mode',
+    backgroundTraySubtitle: 'Send app to tray when focus is lost and window is not pinned',
     confetti: 'Confetti',
     confettiSubtitle: 'Launch confetti when focus session completes',
     language: 'Language',

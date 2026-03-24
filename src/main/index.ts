@@ -1,4 +1,4 @@
-import { app, BrowserWindow, nativeImage } from 'electron'
+import { app, BrowserWindow, nativeImage, Tray } from 'electron'
 import Store from 'electron-store'
 import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
@@ -12,6 +12,7 @@ import {
   registerUpdateIPC,
   registerNotificationIPC
 } from './ipc'
+import type { BackgroundTimerSyncPayload } from './ipc/window.ipc'
 import type { AppConfig, PendingUpdate } from '../shared/types'
 import { initMainI18n } from './i18n'
 
@@ -30,6 +31,7 @@ const store = new Store<StoreSchema>({
       soundEnabled: true,
       selectedSound: 'bell',
       confettiEnabled: true,
+      backgroundTrayEnabled: false,
       locale: 'en'
     },
     pendingUpdate: null
@@ -37,6 +39,94 @@ const store = new Store<StoreSchema>({
 })
 
 let mainWindow: BrowserWindow | null = null
+let tray: Tray | null = null
+let backgroundTimerState: BackgroundTimerSyncPayload = {
+  isRunning: false,
+  timeLeft: 0,
+  timerPhase: 'focus'
+}
+let isBlurBackgroundTaskActive = false
+let isBackgroundWindowMode = false
+
+function emitBackgroundTaskState(): void {
+  mainWindow?.webContents.send('background-task:active-state', isBackgroundWindowMode)
+}
+
+function shouldShowTrayTimer(): boolean {
+  if (process.platform !== 'darwin' || !tray) return false
+  return backgroundTimerState.isRunning && isBlurBackgroundTaskActive
+}
+
+function updateTrayTitle(): void {
+  if (process.platform !== 'darwin' || !tray) return
+
+  if (!shouldShowTrayTimer()) {
+    tray.setTitle('')
+    return
+  }
+
+  const remainingMinutes = Math.max(1, Math.ceil(backgroundTimerState.timeLeft / 60))
+  tray.setTitle(`${remainingMinutes}m`)
+}
+
+function enterBackgroundWindowMode(): void {
+  if (process.platform !== 'darwin' || !mainWindow || isBackgroundWindowMode) return
+
+  isBackgroundWindowMode = true
+  mainWindow.setSkipTaskbar(true)
+  mainWindow.hide()
+  app.dock?.hide()
+}
+
+function exitBackgroundWindowMode(): void {
+  if (process.platform !== 'darwin' || !mainWindow || !isBackgroundWindowMode) return
+
+  isBackgroundWindowMode = false
+  app.dock?.show()
+  mainWindow.setSkipTaskbar(false)
+  mainWindow.show()
+  mainWindow.focus()
+}
+
+function restoreFromTray(): void {
+  isBlurBackgroundTaskActive = false
+  emitBackgroundTaskState()
+  exitBackgroundWindowMode()
+  updateTrayTitle()
+}
+
+function syncBackgroundTimerState(payload: BackgroundTimerSyncPayload): void {
+  backgroundTimerState = payload
+
+  if (!payload.isRunning) {
+    isBlurBackgroundTaskActive = false
+    emitBackgroundTaskState()
+    exitBackgroundWindowMode()
+  }
+
+  updateTrayTitle()
+}
+
+function createTray(iconPath: string): void {
+  if (process.platform !== 'darwin') return
+  if (tray) return
+
+  const trayIcon = nativeImage.createFromPath(iconPath).resize({ height: 18 })
+  tray = new Tray(trayIcon)
+  tray.setIgnoreDoubleClickEvents(true)
+  tray.on('click', () => {
+    if (isBackgroundWindowMode) {
+      restoreFromTray()
+    }
+  })
+  updateTrayTitle()
+}
+
+function destroyTray(): void {
+  if (!tray) return
+  tray.destroy()
+  tray = null
+}
 
 function createWindow(): void {
   const isPinned = store.get('isPinned', false)
@@ -55,6 +145,7 @@ function createWindow(): void {
 
   if (process.platform === 'darwin' && !icon.isEmpty()) {
     app.dock?.setIcon(iconPath)
+    createTray(iconPath)
   }
 
   mainWindow = new BrowserWindow({
@@ -72,6 +163,7 @@ function createWindow(): void {
       preload: join(__dirname, '../preload/index.js'),
       contextIsolation: true,
       nodeIntegration: false,
+      backgroundThrottling: false,
       // Required by better-sqlite3 (native addon)
       sandbox: false
     }
@@ -91,6 +183,22 @@ function createWindow(): void {
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow?.webContents.send('pinned-state', isPinned)
+    emitBackgroundTaskState()
+  })
+
+  mainWindow.on('blur', () => {
+    const config = store.get('config')
+    if (store.get('isPinned', false)) return
+    if (!config.backgroundTrayEnabled) return
+    if (!backgroundTimerState.isRunning) return
+    isBlurBackgroundTaskActive = true
+    enterBackgroundWindowMode()
+    updateTrayTitle()
+  })
+
+  mainWindow.on('focus', () => {
+    isBlurBackgroundTaskActive = false
+    updateTrayTitle()
   })
 }
 
@@ -116,6 +224,7 @@ if (!gotTheLock) {
   })
 
   app.on('before-quit', () => {
+    destroyTray()
     closeDatabase()
   })
 
@@ -123,7 +232,9 @@ if (!gotTheLock) {
     initMainI18n(store)
     initDatabase()
     registerSessionIPC()
-    registerWindowIPC(() => mainWindow, store)
+    registerWindowIPC(() => mainWindow, store, {
+      syncTimer: syncBackgroundTimerState
+    })
     registerConfigIPC(store)
     registerAppIPC()
     registerUpdateIPC()
