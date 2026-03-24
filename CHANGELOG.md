@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.8.0](https://github.com/torrescereno/hollow/compare/v3.7.0...v3.8.0) (2026-03-24)
+
+
+### Features
+
+* implement background tray mode functionality ([a5ec5dd](https://github.com/torrescereno/hollow/commit/a5ec5dd63a0f52dfad4e55ca2c41193be8b568c6))
+
+
+### Bug Fixes
+
+* update tray title display for timer in background mode ([55b3a6c](https://github.com/torrescereno/hollow/commit/55b3a6c8281f11b6cdfe14659c05abc41ab638e6))
+
 ## [3.7.0](https://github.com/torrescereno/hollow/compare/v3.6.0...v3.7.0) (2026-03-20)
 
 
