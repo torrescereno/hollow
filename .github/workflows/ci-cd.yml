@@ -10,6 +10,9 @@ permissions:
   contents: write
   pull-requests: write
 
+env:
+  APP_NAME: hollow
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -208,6 +211,21 @@ jobs:
           bunx electron-builder --mac --arm64 --x64 --publish always
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  update-homebrew:
+    needs: [release, build-macos]
+    if: needs.release.outputs.release_created
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger homebrew-apps update
+        run: |
+          VERSION="${{ needs.release.outputs.tag_name }}"
+          VERSION="${VERSION#v}"
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.HOMEBREW_TAP_TOKEN }}" \
+            https://api.github.com/repos/blas-works/homebrew-apps/dispatches \
+            -d "{\"event_type\":\"update-cask\",\"client_payload\":{\"app\":\"${{ env.APP_NAME }}\",\"version\":\"${VERSION}\"}}"
 
   build-linux:
     needs: [test, release]
