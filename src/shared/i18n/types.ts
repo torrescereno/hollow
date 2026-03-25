@@ -94,6 +94,9 @@ export interface Translations {
     available: string
     snooze: string
     brewHint: string
+    update: string
+    updating: string
+    brewFailed: string
   }
   sounds: {
     bell: string

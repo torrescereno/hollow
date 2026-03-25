@@ -38,6 +38,7 @@ export interface ElectronAPI {
     getStatus: () => Promise<UpdateInfo>
     restart: () => Promise<boolean>
     snooze: () => Promise<boolean>
+    brewUpgrade: () => Promise<boolean>
     onStatus: (callback: (status: UpdateInfo) => void) => () => void
   }
 }

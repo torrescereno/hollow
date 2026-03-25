@@ -42,6 +42,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getStatus: (): Promise<UpdateInfo> => ipcRenderer.invoke('update:get-status'),
     restart: (): Promise<boolean> => ipcRenderer.invoke('update:restart'),
     snooze: (): Promise<boolean> => ipcRenderer.invoke('update:snooze'),
+    brewUpgrade: (): Promise<boolean> => ipcRenderer.invoke('update:brew-upgrade'),
     onStatus: (callback: (status: UpdateInfo) => void): (() => void) => {
       const handler = (_event: Electron.IpcRendererEvent, status: UpdateInfo): void =>
         callback(status)

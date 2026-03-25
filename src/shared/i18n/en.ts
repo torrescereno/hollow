@@ -96,7 +96,10 @@ export const en = {
     skip: 'Skip',
     available: 'Update available',
     snooze: '5 min',
-    brewHint: 'brew upgrade --cask hollow'
+    brewHint: 'brew upgrade --cask hollow',
+    update: 'Update',
+    updating: 'Updating...',
+    brewFailed: 'Update failed'
   },
   sounds: {
     bell: 'Classic Bell',

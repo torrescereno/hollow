@@ -6,6 +6,7 @@ export function useUpdate(): {
   checkForUpdates: () => Promise<void>
   restartNow: () => Promise<void>
   snoozeUpdate: () => Promise<void>
+  brewUpgrade: () => Promise<void>
   dismissUpdate: () => void
 } {
   const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(null)
@@ -49,6 +50,11 @@ export function useUpdate(): {
     await window.electronAPI.update.snooze()
   }, [])
 
+  const brewUpgrade = useCallback(async (): Promise<void> => {
+    if (!window.electronAPI?.update) return
+    await window.electronAPI.update.brewUpgrade()
+  }, [])
+
   const dismissUpdate = useCallback((): void => {
     setUpdateInfo(null)
   }, [])
@@ -58,6 +64,7 @@ export function useUpdate(): {
     checkForUpdates,
     restartNow,
     snoozeUpdate,
+    brewUpgrade,
     dismissUpdate
   }
 }

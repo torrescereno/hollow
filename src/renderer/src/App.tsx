@@ -33,7 +33,8 @@ export default function App(): React.JSX.Element {
   const { timeLeft, isRunning, timerPhase, toggleTimer, resetTimer, skipRest, setTimeLeft } =
     useTimer(config.focusMinutes, config.restMinutes, configRef, logSession)
 
-  const { updateInfo, checkForUpdates, restartNow, snoozeUpdate, dismissUpdate } = useUpdate()
+  const { updateInfo, checkForUpdates, restartNow, snoozeUpdate, brewUpgrade, dismissUpdate } =
+    useUpdate()
 
   const size = view === 'menu' ? MENU_SIZE : TIMER_SIZE
   const borderRadius = view === 'menu' ? 'rounded-[2rem]' : 'rounded-[1.5rem]'
@@ -78,6 +79,7 @@ export default function App(): React.JSX.Element {
             updateInfo={updateInfo}
             onRestart={restartNow}
             onSnooze={snoozeUpdate}
+            onBrewUpgrade={brewUpgrade}
             onDismiss={dismissUpdate}
           />
           <AnimatePresence mode="wait" onExitComplete={onExitComplete}>

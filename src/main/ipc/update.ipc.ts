@@ -3,7 +3,8 @@ import {
   checkForUpdates,
   getUpdateStatus,
   forceRestart,
-  snoozeCriticalRestart
+  snoozeCriticalRestart,
+  runBrewUpgrade
 } from '../autoUpdater'
 
 export function registerUpdateIPC(): void {
@@ -23,6 +24,11 @@ export function registerUpdateIPC(): void {
 
   ipcMain.handle('update:snooze', () => {
     snoozeCriticalRestart()
+    return true
+  })
+
+  ipcMain.handle('update:brew-upgrade', () => {
+    runBrewUpgrade()
     return true
   })
 }

@@ -96,7 +96,10 @@ export const es = {
     skip: 'Omitir',
     available: 'Actualización disponible',
     snooze: '5 min',
-    brewHint: 'brew upgrade --cask hollow'
+    brewHint: 'brew upgrade --cask hollow',
+    update: 'Actualizar',
+    updating: 'Actualizando...',
+    brewFailed: 'Error al actualizar'
   },
   sounds: {
     bell: 'Campana Clásica',

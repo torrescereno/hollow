@@ -7,6 +7,7 @@ interface UpdateNotificationProps {
   updateInfo: UpdateInfo | null
   onRestart: () => void
   onSnooze: () => void
+  onBrewUpgrade: () => void
   onDismiss: () => void
 }
 
@@ -14,6 +15,7 @@ export function UpdateNotification({
   updateInfo,
   onRestart,
   onSnooze,
+  onBrewUpgrade,
   onDismiss
 }: UpdateNotificationProps): React.JSX.Element | null {
   const { t } = useI18n()
@@ -52,6 +54,7 @@ export function UpdateNotification({
         updateInfo={updateInfo}
         isCritical={isCritical}
         isSecurity={isSecurity}
+        onBrewUpgrade={onBrewUpgrade}
         onDismiss={onDismiss}
         t={t}
       />
@@ -182,17 +185,31 @@ interface BrewUpdateBannerProps {
   updateInfo: UpdateInfo
   isCritical: boolean
   isSecurity: boolean
+  onBrewUpgrade: () => void
   onDismiss: () => void
-  t: { update: { available: string; skip: string; brewHint: string } }
+  t: {
+    update: {
+      available: string
+      skip: string
+      brewHint: string
+      update: string
+      updating: string
+      brewFailed: string
+    }
+  }
 }
 
 function BrewUpdateBanner({
   updateInfo,
   isCritical,
   isSecurity,
+  onBrewUpgrade,
   onDismiss,
   t
 }: BrewUpdateBannerProps): React.JSX.Element {
+  const isUpdating = updateInfo.brewUpdating === true
+  const hasError = !!updateInfo.brewError
+
   const bg = isCritical
     ? 'bg-red-900/95'
     : isSecurity
@@ -208,14 +225,24 @@ function BrewUpdateBanner({
     : isSecurity
       ? 'text-orange-300'
       : 'text-muted-foreground'
-  const hintColor = isCritical
+  const skipBtnColor = isCritical || isSecurity
+    ? 'text-white/60 hover:text-white/80'
+    : 'text-muted-foreground hover:text-foreground/60'
+  const updateBtnColor = isCritical
+    ? 'bg-white/20 text-white hover:bg-white/30'
+    : isSecurity
+      ? 'bg-white/20 text-white hover:bg-white/30'
+      : 'bg-white/20 text-white hover:bg-white/30'
+  const errorColor = isCritical
     ? 'text-red-300/60'
     : isSecurity
       ? 'text-orange-300/60'
       : 'text-muted-foreground/60'
-  const btnColor = isCritical || isSecurity
-    ? 'text-white/60 hover:text-white/80'
-    : 'text-muted-foreground hover:text-foreground/60'
+  const spinnerColor = isCritical
+    ? 'border-red-300/30 border-t-red-200'
+    : isSecurity
+      ? 'border-orange-300/30 border-t-orange-200'
+      : 'border-white/20 border-t-white/60'
 
   const Icon = isCritical ? WarningIcon : isSecurity ? LockIcon : CloudIcon
   const iconColor = isCritical
@@ -230,21 +257,43 @@ function BrewUpdateBanner({
         <div className="flex items-center gap-1.5">
           <Icon className={iconColor} />
           <span className={`flex-1 ${textColor}`}>
-            {t.update.available}
-            {updateInfo.version && <span className={versionColor}> v{updateInfo.version}</span>}
+            {isUpdating ? t.update.updating : t.update.available}
+            {!isUpdating && updateInfo.version && (
+              <span className={versionColor}> v{updateInfo.version}</span>
+            )}
           </span>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onDismiss}
-            className={`${btnColor} text-[10px] rounded-full`}
-          >
-            {t.update.skip}
-          </Button>
+
+          {isUpdating ? (
+            <div
+              className={`h-3.5 w-3.5 shrink-0 animate-spin rounded-full border-2 ${spinnerColor}`}
+            />
+          ) : (
+            <>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onDismiss}
+                className={`${skipBtnColor} text-[10px] rounded-full`}
+              >
+                {t.update.skip}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onBrewUpgrade}
+                className={`${updateBtnColor} text-[10px] rounded-full`}
+              >
+                {t.update.update}
+              </Button>
+            </>
+          )}
         </div>
-        <span className={`${hintColor} font-mono text-[10px] pl-5`}>
-          {t.update.brewHint}
-        </span>
+
+        {hasError && (
+          <span className={`${errorColor} text-[10px] pl-5`}>
+            {t.update.brewFailed}
+          </span>
+        )}
       </div>
     </div>
   )
