@@ -21,7 +21,12 @@ win:
   icon: build/icons/win/icon.ico
   executableName: hollow
   target:
-    - msi
+    - nsis
+nsis:
+  oneClick: true
+  perMachine: false
+  allowToChangeInstallationDirectory: false
+  deleteAppDataOnUninstall: false
 mac:
   icon: build/icons/mac/icon.icns
   entitlementsInherit: build/entitlements.mac.plist
