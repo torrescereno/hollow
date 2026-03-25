@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.9.0](https://github.com/blas-works/hollow/compare/v3.8.0...v3.9.0) (2026-03-25)
+
+
+### Features
+
+* migrate to blas-works org and enable macOS auto-updates ([25e74b5](https://github.com/blas-works/hollow/commit/25e74b54d89b06ad0429a6df143ef5e047dd380d))
+
 ## [3.8.0](https://github.com/torrescereno/hollow/compare/v3.7.0...v3.8.0) (2026-03-24)
 
 
