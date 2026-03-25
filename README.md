@@ -29,8 +29,6 @@
 
   <p>
     <a href="#features">Features</a> •
-    <a href="#tech-stack">Tech Stack</a> •
-    <a href="#architecture">Architecture</a> •
     <a href="#installation">Installation</a>
   </p>
 </div>
@@ -39,22 +37,13 @@
 
 ## ✨ Features
 
-| ⏱️ **Smart Timer** | Customizable focus (1-90 min) and rest (1-30 min) intervals |
-| | Pause, resume, reset, and skip rest |
-| | Health warning for sessions over 30 minutes |
-| **📊 Detailed Statistics** | Complete session history with streaks tracking |
-| | 24-week activity heatmap and weekly activity view |
-| | CSV export and clear data options |
-| **⚙️ Flexible Configuration** | 4 notification sounds (Bell, Digital, Wood, Tibetan Bowl) |
-| | Confetti celebration toggle |
-| | Always-on-top window pinning |
-| | Background tray mode for minimized focus (macOS) |
-| | Multi-language support (English, Spanish) |
-| **🔄 Automatic Updates** | Smart updates with critical, security, and normal priority |
-| | Countdown with snooze option for critical updates |
-| **💾 Local Storage** | Private data stored locally, no internet required |
-| | SQLite database with Drizzle ORM |
-| | Offline-first design, privacy-focused |
+| Feature                       | Description                                                                                                                                |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| ⏱️ **Smart Timer**            | Customizable focus (1-90 min) and rest (1-30 min) intervals. Pause, resume, reset, and skip rest. Health warning for sessions over 30 min. |
+| 📊 **Detailed Statistics**    | Session history with streaks, 24-week activity heatmap, weekly view, CSV export, and clear data options.                                   |
+| ⚙️ **Flexible Configuration** | 4 notification sounds, confetti toggle, always-on-top pinning, background tray mode (macOS), multi-language (EN/ES).                       |
+| 🔄 **Automatic Updates**      | Smart priority updates (critical, security, normal) with countdown and snooze option.                                                      |
+| 💾 **Local Storage**          | SQLite + Drizzle ORM, offline-first, privacy-focused. No internet required.                                                                |
 
 ## 🚀 Installation
 
