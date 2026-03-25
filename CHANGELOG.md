@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.11.0](https://github.com/blas-works/hollow/compare/v3.10.1...v3.11.0) (2026-03-25)
+
+
+### Features
+
+* actualizacion automatica con brew ([a77a9f7](https://github.com/blas-works/hollow/commit/a77a9f7ddb5a180e74c4225b79663d642913654d))
+
+
+### Bug Fixes
+
+* cierra la aplicacion antes de actualizar ([844f54d](https://github.com/blas-works/hollow/commit/844f54d10a7c3f4e8a38a545121a54202781dff7))
+
 ## [3.10.1](https://github.com/blas-works/hollow/compare/v3.10.0...v3.10.1) (2026-03-25)
 
 
