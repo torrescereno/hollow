@@ -49,24 +49,12 @@
 | **⚙️ Flexible Configuration** | 4 notification sounds (Bell, Digital, Wood, Tibetan Bowl)    |
 |                               | Confetti celebration toggle                                  |
 |                               | Always-on-top window pinning                                 |
+|                               | Background tray mode for minimized focus                     |
+|                               | Multi-language support (English, Spanish)                    |
 | **🔄 Automatic Updates**      | Smart updates with critical, security, and normal priority   |
 |                               | Countdown with snooze option for critical updates            |
 | **💾 Local Storage**          | Private data stored locally, no internet connection required |
 |                               | SQLite database with offline-first design                    |
-
-## 📸 Screenshots
-
-<div align="center">
-
-|                       Timer View                        |                       Config View                        |
-| :-----------------------------------------------------: | :------------------------------------------------------: |
-| <img width="360" src="resources/screenshots/timer.png"> | <img width="360" src="resources/screenshots/config.png"> |
-
-|                       Stats View                        |
-| :-----------------------------------------------------: |
-| <img width="360" src="resources/screenshots/stats.png"> |
-
-</div>
 
 ## 🚀 Installation
 
@@ -81,7 +69,32 @@ Download the latest version from [GitHub Releases](https://github.com/blas-works
 | **macOS**   | Apple Silicon | `.dmg` `.zip`      |
 | **macOS**   | Intel         | `.dmg` `.zip`      |
 
-#### macOS: First Run
+### Homebrew (macOS/Linux)
+
+Install Hollow via [Homebrew](https://brew.sh):
+
+**Option 1 — Add tap first (recommended):**
+
+```bash
+brew tap blas-works/apps
+brew install --cask hollow
+```
+
+**Option 2 — One-liner without tap:**
+
+```bash
+brew install --cask blas-works/apps/hollow
+```
+
+To upgrade to the latest version:
+
+```bash
+brew upgrade --cask hollow
+```
+
+> **Note:** Automatic updates are not available on macOS via Homebrew. Run `brew upgrade --cask hollow` to update.
+
+#### macOS: First Run (Manual Install)
 
 The app is not signed with Apple Developer. After installing, run in Terminal:
 
@@ -89,7 +102,7 @@ The app is not signed with Apple Developer. After installing, run in Terminal:
 xattr -cr /Applications/Hollow.app
 ```
 
-> **Note:** Automatic updates are not available on macOS (requires Apple Developer signature). Download new versions manually from [Releases](https://github.com/blas-works/hollow/releases/latest).
+> **Note:** Manual `.dmg`/`.zip` installs do not receive automatic updates. Use Homebrew for easier updates.
 
 ### Development
 
