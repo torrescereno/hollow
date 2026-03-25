@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.10.0](https://github.com/blas-works/hollow/compare/v3.9.1...v3.10.0) (2026-03-25)
+
+
+### Features
+
+* actualizacion de readme ([9d47d71](https://github.com/blas-works/hollow/commit/9d47d71d212414a74515936e87768e39e2a29734))
+* actualizacion readme ([f018105](https://github.com/blas-works/hollow/commit/f0181059b7cc756481b4c0a5ee6abdb43aa32fa7))
+* se agrega readme ([36eafb8](https://github.com/blas-works/hollow/commit/36eafb8144a3c5a95811df7b5a05393db64acde2))
+
+
+### Bug Fixes
+
+* formato readme ([a11e623](https://github.com/blas-works/hollow/commit/a11e6234dc7d5762cb924d3bf151a0c8a90fe16c))
+
 ## [3.9.1](https://github.com/blas-works/hollow/compare/v3.9.0...v3.9.1) (2026-03-25)
 
 
