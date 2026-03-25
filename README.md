@@ -39,22 +39,22 @@
 
 ## ✨ Features
 
-| ⏱️ **Smart Timer**            | Customizable focus (1-90 min) and rest (1-30 min) intervals  |
-| :---------------------------- | :----------------------------------------------------------- |
-|                               | Pause, resume, reset, and skip rest                          |
-|                               | Health warning for sessions over 30 minutes                  |
-| **📊 Detailed Statistics**    | Complete session history with streaks tracking               |
-|                               | 24-week activity heatmap and weekly activity view            |
-|                               | CSV export and clear data options                            |
-| **⚙️ Flexible Configuration** | 4 notification sounds (Bell, Digital, Wood, Tibetan Bowl)    |
-|                               | Confetti celebration toggle                                  |
-|                               | Always-on-top window pinning                                 |
-|                               | Background tray mode for minimized focus                     |
-|                               | Multi-language support (English, Spanish)                    |
-| **🔄 Automatic Updates**      | Smart updates with critical, security, and normal priority   |
-|                               | Countdown with snooze option for critical updates            |
-| **💾 Local Storage**          | Private data stored locally, no internet connection required |
-|                               | SQLite database with offline-first design                    |
+| ⏱️ **Smart Timer** | Customizable focus (1-90 min) and rest (1-30 min) intervals |
+| | Pause, resume, reset, and skip rest |
+| | Health warning for sessions over 30 minutes |
+| **📊 Detailed Statistics** | Complete session history with streaks tracking |
+| | 24-week activity heatmap and weekly activity view |
+| | CSV export and clear data options |
+| **⚙️ Flexible Configuration** | 4 notification sounds (Bell, Digital, Wood, Tibetan Bowl) |
+| | Confetti celebration toggle |
+| | Always-on-top window pinning |
+| | Background tray mode for minimized focus (macOS) |
+| | Multi-language support (English, Spanish) |
+| **🔄 Automatic Updates** | Smart updates with critical, security, and normal priority |
+| | Countdown with snooze option for critical updates |
+| **💾 Local Storage** | Private data stored locally, no internet required |
+| | SQLite database with Drizzle ORM |
+| | Offline-first design, privacy-focused |
 
 ## 🚀 Installation
 
@@ -100,6 +100,8 @@ The app is not signed with Apple Developer. After installing, run in Terminal:
 xattr -cr /Applications/Hollow.app
 ```
 
+> **Note:** Automatic updates are not available on macOS (requires Apple Developer signature). Download new versions manually from [Releases](https://github.com/blas-works/hollow/releases/latest).
+
 ### Development
 
 #### Prerequisites
@@ -124,12 +126,17 @@ bun run dev
 <details>
 <summary><b>📖 Development Scripts</b></summary>
 
-| Command               | Description                        |
-| --------------------- | ---------------------------------- |
-| `bun run dev`         | Development server with hot reload |
-| `bun run build`       | Production build (auto-detects OS) |
-| `bun run build:win`   | Build for Windows (.exe)           |
-| `bun run build:mac`   | Build for macOS (.dmg)             |
-| `bun run build:linux` | Build for Linux (.AppImage, .deb)  |
+| Command                 | Description                        |
+| ----------------------- | ---------------------------------- |
+| `bun run dev`           | Development server with hot reload |
+| `bun run build`         | Production build (auto-detects OS) |
+| `bun run build:win`     | Build for Windows (.exe)           |
+| `bun run build:mac`     | Build for macOS (.dmg)             |
+| `bun run build:linux`   | Build for Linux (.AppImage, .deb)  |
+| `bun run test`          | Run tests in watch mode            |
+| `bun run test:run`      | Run tests once                     |
+| `bun run test:coverage` | Run tests with coverage report     |
+| `bun run lint`          | Lint code with ESLint              |
+| `bun run typecheck`     | Type check with TypeScript         |
 
 </details>
