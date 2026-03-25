@@ -81,15 +81,6 @@ Download the latest version from [GitHub Releases](https://github.com/blas-works
 | **macOS**   | Apple Silicon | `.dmg`                    |
 | **macOS**   | Intel         | `.dmg`                    |
 
-#### macOS: First Run
-
-The app is not signed with Apple Developer. After installing, run in Terminal:
-
-```bash
-xattr -cr /Applications/Hollow.app
-```
-
-> **Note:** Automatic updates are not available on macOS (requires Apple Developer signature). Download new versions manually from [Releases](https://github.com/blas-works/hollow/releases/latest).
 
 ### Development
 
