@@ -262,7 +262,7 @@ export function runBrewUpgrade(): void {
     'sh',
     [
       '-c',
-      `${brewPath} upgrade --cask hollow 2>&1 && sleep 1 && open -a "Hollow"`
+      `${brewPath} update 2>&1 && ${brewPath} upgrade --cask hollow 2>&1 && sleep 1 && open -a "Hollow"`
     ],
     { detached: true, stdio: 'ignore' }
   )
