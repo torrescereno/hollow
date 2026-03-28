@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.11.1](https://github.com/blas-works/hollow/compare/v3.11.0...v3.11.1) (2026-03-28)
+
+
+### Bug Fixes
+
+* update ([eb56618](https://github.com/blas-works/hollow/commit/eb566185653d22d5dd32d360b51c5447273ca9af))
+
 ## [3.11.0](https://github.com/blas-works/hollow/compare/v3.10.1...v3.11.0) (2026-03-25)
 
 
